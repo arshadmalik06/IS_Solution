@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FileText, ShieldCheck, Award, FlaskConical, Search, Cpu, ListChecks } from 'lucide-react'
 import Header from '../components/Header'
-
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
@@ -26,7 +25,7 @@ export default function LandingPage() {
             
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <Link to="/chat" className="btn-primary flex items-center justify-center text-[15px] px-6 h-12">
-                Ask BIS AI &rarr;
+                Ask <span className="text-white">&nbsp;<span className="text-blue-300">Qu</span>BIS&nbsp;</span> AI &rarr;
               </Link>
               <a href="#capabilities" className="btn-secondary flex items-center justify-center text-[15px] px-6 h-12">
                 Explore capabilities
@@ -95,7 +94,7 @@ export default function LandingPage() {
           <div className="flex-1 space-y-6">
             <h2 className="text-[36px] font-bold tracking-tight">Empowering Industries & Consumers</h2>
             <p className="text-[17px] text-text-secondary leading-relaxed">
-              The BIS AI Assistant is designed to bridge the gap between complex regulatory documents and the people who need them. Whether you are an MSME navigating certification, a startup building a new product, or a consumer checking a hallmark, our AI provides clear, source-backed answers.
+              The <span className="text-bis-blue font-semibold">Qu</span><span className="text-bis-red font-semibold">BIS</span> is designed to bridge the gap between complex regulatory documents and the people who need them. Whether you are an MSME navigating certification, a startup building a new product, or a consumer checking a hallmark, our AI provides clear, source-backed answers.
             </p>
             <div className="flex flex-wrap gap-3 pt-4">
               {['Manufacturers', 'MSMEs', 'Startups', 'Consumers', 'Students', 'Professionals'].map(tag => (
@@ -120,7 +119,9 @@ export default function LandingPage() {
       <footer className="w-full border-t border-border mt-auto py-12 text-center text-text-muted text-[14px]">
         <div className="max-w-[1320px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-md bg-bis-blue flex items-center justify-center font-bold text-xs text-white">BIS</div>
+            <span className="font-bold text-[17px] leading-tight tracking-tight">
+              <span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span>
+            </span>
             <span className="font-semibold text-text-primary">Bureau of Indian Standards</span>
           </div>
           <div className="flex gap-6">
@@ -129,7 +130,7 @@ export default function LandingPage() {
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms</a>
           </div>
-          <div>&copy; 2026 BIS AI Assistant. All rights reserved.</div>
+          <div>&copy; 2026 <span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span>. All rights reserved.</div>
         </div>
       </footer>
     </div>

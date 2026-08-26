@@ -1,7 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Globe, Moon } from 'lucide-react'
+
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import logo from '../assets/logo.png'
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs))
@@ -27,11 +28,11 @@ export default function Header() {
       <div className="w-full max-w-[1320px] px-6 lg:px-10 flex items-center justify-between">
         {/* Left: Brand */}
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-bis-blue flex items-center justify-center font-bold text-lg text-white shadow-lg">
-            BIS
-          </div>
+          <img src={logo} alt="QuBIS Logo" className="w-10 h-10 object-contain" />
           <div className="flex flex-col">
-            <span className="font-bold text-[17px] leading-tight tracking-tight">BIS AI Assistant</span>
+            <span className="font-bold text-[17px] leading-tight tracking-tight">
+              <span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span>
+            </span>
             <span className="text-[13px] text-text-muted leading-tight">Bureau of Indian Standards</span>
           </div>
         </Link>
@@ -57,12 +58,6 @@ export default function Header() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-4">
-          <button className="p-2 text-text-muted hover:text-white transition-colors rounded-lg hover:bg-surface-elevated">
-            <Globe className="w-5 h-5" />
-          </button>
-          <button className="p-2 text-text-muted hover:text-white transition-colors rounded-lg hover:bg-surface-elevated">
-            <Moon className="w-5 h-5" />
-          </button>
           <Link to="/chat" className="btn-primary flex items-center gap-2 text-[14px] ml-2">
             Open Assistant &rarr;
           </Link>
