@@ -1,10 +1,12 @@
+import glob
 import os
+import re
 import uuid
 from app.core.vector_store import BISVectorStore
 from app.ingestion.pdf_parser import BISPDFParser
 
 
-def ingest_standard_pdf(filepath: str, standard_id: str, scheme_type: str):
+def ingest_standard_pdf(filepath: str, standard_id: str, scheme_type: str = "ISI Mark"):
     """
     Extracts structured, cleaned clauses using BISPDFParser and indexes them into ChromaDB.
     """
@@ -14,7 +16,7 @@ def ingest_standard_pdf(filepath: str, standard_id: str, scheme_type: str):
     parsed_chunks = parser.parse()
     
     if not parsed_chunks:
-        print(f"[Warning] No clauses extracted for {standard_id}")
+        print(f"[Warning] No clauses extracted for {standard_id}. Check if the document is a scanned image.")
         return
 
     documents = []
@@ -41,20 +43,39 @@ def ingest_standard_pdf(filepath: str, standard_id: str, scheme_type: str):
 if __name__ == "__main__":
     raw_pdf_dir = os.path.join(os.getcwd(), "app", "data", "raw_pdfs")
     
-    # Reset Chroma collection to purge previous chopped chunks
+    # 1. Purge / reset Chroma collection once before batch ingestion
     db = BISVectorStore()
     try:
         db.client.delete_collection("bis_standards")
         db.collection = db.client.get_or_create_collection("bis_standards")
-        print("[Database] Purged old corrupted collection.")
+        print("[Database] Purged old collection and initialized clean database.")
     except Exception:
         pass
 
-    file_1 = os.path.join(raw_pdf_dir, "1863_1979_reff2019.pdf")
-    file_2 = os.path.join(raw_pdf_dir, "2347_2023.pdf")
+    # 2. Find all PDF files in the raw_pdfs folder
+    pdf_files = glob.glob(os.path.join(raw_pdf_dir, "*.pdf"))
 
-    if os.path.exists(file_1):
-        ingest_standard_pdf(file_1, standard_id="IS 1863", scheme_type="Structural")
-    
-    if os.path.exists(file_2):
-        ingest_standard_pdf(file_2, standard_id="IS 2347", scheme_type="ISI Mark")
+    if not pdf_files:
+        print(f"[Warning] No PDF files found in {raw_pdf_dir}")
+
+    # 3. Dynamic loop through all files
+    for pdf_path in pdf_files:
+        filename = os.path.basename(pdf_path)
+        
+        # Regex to extract the leading standard number (e.g., '8978' from '8978_2023.pdf' or 'IS_8978.pdf')
+        match = re.search(r'(\d+)', filename)
+        if match:
+            std_num = match.group(1)
+            standard_id = f"IS {std_num}"
+        else:
+            # Fallback if no digits found
+            standard_id = os.path.splitext(filename)[0]
+
+        try:
+            ingest_standard_pdf(
+                filepath=pdf_path,
+                standard_id=standard_id,
+                scheme_type="ISI Mark"
+            )
+        except Exception as e:
+            print(f"[Error] Failed processing {filename}: {e}")

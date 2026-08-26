@@ -20,7 +20,7 @@ async def chat_stream(request: ChatRequest):
     """
     try:
         # FIX: vector_store.search() returns a List directly, no need for .get()
-        context_chunks = vector_store.search(request.query, top_k=3)
+        context_chunks = vector_store.search(request.query, top_k=8)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database search failed: {str(e)}")
 
@@ -29,7 +29,7 @@ async def chat_stream(request: ChatRequest):
 
 class SearchRequest(BaseModel):
     query: str
-    top_k: int = 3
+    top_k: int = 8
 
 @router.post("/search")
 async def search_documents(request: SearchRequest):
