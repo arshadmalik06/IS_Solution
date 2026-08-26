@@ -12,7 +12,7 @@ class ChatRequest(BaseModel):
     query: str
     session_id: str = "default"
 
-@router.post("/api/chat/stream")
+@router.post("/chat/stream")
 async def chat_stream(request: ChatRequest):
     """
     Receives a query, fetches relevant clauses from ChromaDB, 
@@ -31,7 +31,7 @@ class SearchRequest(BaseModel):
     query: str
     top_k: int = 3
 
-@router.post("/api/search")
+@router.post("/search")
 async def search_documents(request: SearchRequest):
     try:
         results = vector_store.search(request.query, top_k=request.top_k)

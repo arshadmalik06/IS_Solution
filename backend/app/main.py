@@ -5,7 +5,7 @@ from app.api.routes import router as api_router
 # Initialize the FastAPI application with professional documentation tags
 app = FastAPI(
     title="BIS Intelligent Assistant API",
-    description="RAG Backend for Indian Standards and BIS Services (SIH 2026)",
+    description="RAG Backend for Indian Standards and BIS Services",
     version="1.0.0"
 )
 

@@ -43,6 +43,9 @@ class BISLLMAgent:
 
     async def generate_stream(self, query: str, context_chunks: list) -> AsyncGenerator[dict, None]:
         """Streams the LLM response chunk by chunk."""
+        # Yield the sources as a custom event first so frontend can display citations
+        yield {"data": json.dumps({"sources": context_chunks})}
+        
         prompt = self._build_prompt(query, context_chunks)
         
         payload = {
