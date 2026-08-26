@@ -1,4 +1,4 @@
-# BIS AI Assistant — Design System
+# QuBIS — Design System
 
 **Project:** SIH 2026 — Problem Statement 26107  
 **Product:** AI-powered Intelligent Assistant for Indian Standards and BIS Services for Industries and Consumers  
@@ -8,7 +8,7 @@
 
 ## 1. Design Intent
 
-The visual direction is based on the provided BIS AI Assistant reference image.
+The visual direction is based on the provided QuBIS reference image.
 
 The product should feel like a **modern BIS digital product** rather than a generic AI/SaaS template.
 
@@ -675,7 +675,7 @@ On mobile, convert to a vertical timeline.
 
 Use a wide matte glass panel.
 
-Explain that BIS AI Assistant helps:
+Explain that QuBIS helps:
 
 - manufacturers
 - MSMEs
@@ -748,7 +748,7 @@ Include:
 
 ### Brand
 
-BIS AI Assistant
+QuBIS
 
 ### New Chat
 

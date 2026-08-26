@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import logo from '../assets/logo.png'
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs))
@@ -130,7 +131,8 @@ export default function ChatPage() {
             >
               <Menu className="w-5 h-5" />
             </button>
-            <span className="font-semibold text-[15px]">BIS AI ASSISTANT</span>
+            <img src={logo} alt="QuBIS" className="w-6 h-6 object-contain" />
+            <span className="font-semibold text-[15px]"><span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span> AI ASSISTANT</span>
           </div>
           <div className="flex items-center gap-2">
             <button className="p-2 text-text-muted hover:text-white rounded-md hover:bg-surface-elevated transition-colors">
@@ -186,7 +188,7 @@ export default function ChatPage() {
             </button>
           </div>
           <div className="text-center text-[11px] text-text-muted mt-2">
-            BIS AI Assistant can make mistakes. Check important info.
+            <span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span> can make mistakes. Check important info.
           </div>
         </div>
       </div>
@@ -203,7 +205,8 @@ function SidebarContent({ onNewChat, onQuickAction }: { onNewChat: () => void, o
   return (
     <div className="flex flex-col h-full p-3 gap-6">
       <Link to="/" className="flex items-center gap-2 p-2">
-        <div className="w-8 h-8 rounded-md bg-bis-blue flex items-center justify-center font-bold text-xs text-white">BIS</div>
+        <img src={logo} alt="QuBIS Logo" className="w-8 h-8 object-contain" />
+        <span className="font-bold text-[14px]"><span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span></span>
       </Link>
       
       <button 
@@ -254,9 +257,7 @@ function EmptyState({ onQuickAction }: { onQuickAction: (q: string) => void }) {
   ]
   return (
     <div className="flex flex-col items-center justify-center pt-16 md:pt-32 gap-6 text-center">
-      <div className="w-16 h-16 rounded-2xl bg-bis-blue flex items-center justify-center shadow-lg shadow-bis-blue/20">
-        <span className="font-bold text-2xl text-white">BIS</span>
-      </div>
+      <img src={logo} alt="QuBIS Logo" className="w-16 h-16 object-contain" />
       <h2 className="text-[28px] font-bold">How can I help you today?</h2>
       <p className="text-text-muted text-[15px] max-w-[400px]">Ask anything about Indian Standards, certification schemes, and BIS services.</p>
       
@@ -281,15 +282,15 @@ function ChatMessage({ message, onSourceClick }: { message: Message, onSourceCli
   return (
     <div className="flex gap-4">
       <div className={cn(
-        "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-1",
-        isAssistant ? "bg-bis-blue text-white" : "bg-surface-elevated border border-border text-text-muted"
+        "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 overflow-hidden",
+        isAssistant ? "" : "bg-surface-elevated border border-border text-text-muted"
       )}>
-        {isAssistant ? <span className="font-bold text-[11px]">BIS</span> : <span className="text-xs">You</span>}
+        {isAssistant ? <img src={logo} alt="QuBIS" className="w-full h-full object-contain" /> : <span className="text-xs">You</span>}
       </div>
       
       <div className="flex-1 space-y-4 pt-1">
         <div className="text-[15px] font-medium text-text-primary">
-          {isAssistant ? 'BIS AI Assistant' : 'You'}
+          {isAssistant ? <><span className="text-bis-blue">Qu</span><span className="text-bis-red">BIS</span></> : 'You'}
         </div>
         
         <div className="prose prose-invert max-w-none text-[15px] leading-relaxed prose-p:leading-relaxed prose-pre:bg-surface-elevated prose-pre:border prose-pre:border-border text-text-secondary">
