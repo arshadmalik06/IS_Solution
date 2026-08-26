@@ -1,0 +1,11 @@
+# Ignore raw PDF data
+app/data/raw_pdfs/*.pdf
+
+# Ignore the generated Vector Database
+chroma_db/
+chroma.sqlite3
+
+# Python environment variables and caches
+venv/
+__pycache__/
+.env 
