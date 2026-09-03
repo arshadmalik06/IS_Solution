@@ -2,17 +2,17 @@
 
 :root, [data-theme="dark"] {
   /* ── Background & Surfaces ── */
-  --theme-bg: #08111d;
-  --theme-bg-warm: #08111d;
-  --theme-surface: #0e1a2c;
-  --theme-surface-elevated: #132238;
-  --theme-surface-user: #122543;
-  --theme-surface-card: #0d1829;
+  --theme-bg: #090C15;
+  --theme-bg-warm: #090C15;
+  --theme-surface: #111625;
+  --theme-surface-elevated: #182035;
+  --theme-surface-user: #1C2640;
+  --theme-surface-card: #141A2B;
   
   /* ── Sidebar (Always Dark) ── */
-  --theme-sidebar-bg: #040a14;
-  --theme-sidebar-surface: #0a1626;
-  --theme-sidebar-border: #152438;
+  --theme-sidebar-bg: #05070D;
+  --theme-sidebar-surface: #0E1321;
+  --theme-sidebar-border: #1B243B;
   --theme-sidebar-text: #94a3b8;
   --theme-sidebar-text-active: #ffffff;
 
@@ -23,9 +23,9 @@
   --theme-brand-glow: rgba(29, 111, 229, 0.35);
 
   /* ── Borders ── */
-  --theme-border: #1e3352;
+  --theme-border: #222C44;
   --theme-border-active: #2b7fff;
-  --theme-border-inner: #1a2e48;
+  --theme-border-inner: #1D263B;
 
   /* ── Typography ── */
   --theme-text-primary: #f1f5f9;
@@ -43,35 +43,35 @@
 
 [data-theme="light"] {
   /* ── Background & Surfaces ── */
-  --theme-bg: #F8F9FB;
-  --theme-bg-warm: #FAF7F2;
+  --theme-bg: #E0EFFF; /* Sky blue background */
+  --theme-bg-warm: #D6EBFF;
   --theme-surface: #FFFFFF;
-  --theme-surface-elevated: #F0F3F6;
-  --theme-surface-user: #0056C7;
+  --theme-surface-elevated: #F0F7FF; /* Icy blue for elevated surfaces */
+  --theme-surface-user: #1B6CFF;
   --theme-surface-card: #FFFFFF;
   
-  /* ── Sidebar (Remains BIS Navy) ── */
-  --theme-sidebar-bg: #011C3C;
-  --theme-sidebar-surface: #102442;
-  --theme-sidebar-border: #1e3b66;
-  --theme-sidebar-text: #94a3b8;
-  --theme-sidebar-text-active: #ffffff;
+  /* ── Sidebar ── */
+  --theme-sidebar-bg: #0A2540; /* Premium deep cobalt to anchor the sky blue */
+  --theme-sidebar-surface: #12365A;
+  --theme-sidebar-border: #1D436D;
+  --theme-sidebar-text: #9EB6D1;
+  --theme-sidebar-text-active: #FFFFFF;
 
   /* ── Primary Accents ── */
-  --theme-brand-primary: #0056C7; /* Action Blue */
-  --theme-brand-hover: #003E91; /* Royal Blue */
-  --theme-brand-accent: #0056C7;
-  --theme-brand-glow: rgba(0, 86, 199, 0.35);
+  --theme-brand-primary: #1B6CFF; /* Vibrant Royal/Cerulean Blue */
+  --theme-brand-hover: #0054ED; 
+  --theme-brand-accent: #1B6CFF;
+  --theme-brand-glow: rgba(27, 108, 255, 0.25);
 
   /* ── Borders ── */
-  --theme-border: #D9E0E8;
-  --theme-border-active: #003E91;
-  --theme-border-inner: #D9E0E8;
+  --theme-border: #BCD6F5; /* Harmonious sky blue border */
+  --theme-border-active: #1B6CFF;
+  --theme-border-inner: #C9E0FA;
 
   /* ── Typography ── */
-  --theme-text-primary: #102E57;
-  --theme-text-secondary: #102E57;
-  --theme-text-muted: #60758F;
+  --theme-text-primary: #0A2540; /* Deep ink blue for highest contrast */
+  --theme-text-secondary: #173861;
+  --theme-text-muted: #5B7A9E;
 
   /* ── Status Colors ── */
   --theme-status-green: #238B45;
