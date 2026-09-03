@@ -1,71 +1,84 @@
-import { Link, useLocation } from 'react-router-dom'
-import { Globe, Moon } from 'lucide-react'
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
-
-function cn(...inputs: (string | undefined | null | false)[]) {
-  return twMerge(clsx(inputs))
+type HeaderProps = {
+  chatTitle?: string
+  onToggleSidebar: () => void
 }
 
-export default function Header() {
-  const location = useLocation()
-  const isChat = location.pathname === '/chat'
+export default function Header({ chatTitle, onToggleSidebar }: HeaderProps) {
+  const handleExport = () => {
+    // Export current chat as text file
+    const content = document.querySelector('[data-chat-content]')?.textContent || 'No chat content to export.'
+    const blob = new Blob([content], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `bis-report-${new Date().toISOString().slice(0, 10)}.txt`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
-  if (isChat) return null // Chat has its own header
-
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/#about' },
-    { name: 'Features', path: '/#features' },
-    { name: 'How it Works', path: '/#how-it-works' },
-    { name: 'Capabilities', path: '/#capabilities' },
-    { name: 'About BIS', path: 'https://www.bis.gov.in/' },
-  ]
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      // Could add a toast notification here
+    } catch {
+      // Fallback
+    }
+  }
 
   return (
-    <header className="relative z-50 w-full h-[88px] flex items-center justify-center border-b border-border">
-      <div className="w-full max-w-[1320px] px-6 lg:px-10 flex items-center justify-between">
-        {/* Left: Brand */}
-        <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-bis-blue flex items-center justify-center font-bold text-lg text-white shadow-lg">
-            BIS
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold text-[17px] leading-tight tracking-tight">BIS AI Assistant</span>
-            <span className="text-[13px] text-text-muted leading-tight">Bureau of Indian Standards</span>
-          </div>
-        </Link>
+    <header className="fixed top-0 right-0 left-0 md:left-72 h-14 bg-background/95 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.15)] border-b border-border z-40 flex items-center justify-between px-4 transition-colors">
+      <div className="flex items-center gap-3">
+        {/* Mobile menu button */}
+        <button
+          onClick={onToggleSidebar}
+          className="md:hidden p-2 text-text-muted hover:text-text-primary rounded-lg hover:bg-surface-elevated transition-colors"
+        >
+          <span className="material-symbols-outlined text-[20px]">menu</span>
+        </button>
 
-        {/* Center: Navigation */}
-        <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.path}
-              className={cn(
-                "text-[14px] font-medium transition-colors hover:text-white",
-                link.name === 'Home' ? "text-white relative" : "text-text-muted"
-              )}
-            >
-              {link.name}
-              {link.name === 'Home' && (
-                <div className="absolute -bottom-[33px] left-0 right-0 h-[2px] bg-bis-red" />
-              )}
-            </a>
-          ))}
-        </nav>
+        {/* Mobile Brand */}
+        <div className="md:hidden flex items-center gap-2">
+          <img src="/qubis-logo.png" alt="QuBIS" className="h-7 w-auto object-contain" />
+          <span className="font-bold text-[15px] text-text-primary">QuBIS</span>
+        </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-4">
-          <button className="p-2 text-text-muted hover:text-white transition-colors rounded-lg hover:bg-surface-elevated">
-            <Globe className="w-5 h-5" />
-          </button>
-          <button className="p-2 text-text-muted hover:text-white transition-colors rounded-lg hover:bg-surface-elevated">
-            <Moon className="w-5 h-5" />
-          </button>
-          <Link to="/chat" className="btn-primary flex items-center gap-2 text-[14px] ml-2">
-            Open Assistant &rarr;
-          </Link>
+        {chatTitle && (
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-card border border-border text-text-primary text-[14px] font-semibold transition-colors">
+            <span className="material-symbols-outlined text-[18px] text-brand-accent">chat</span>
+            <span className="inline">{chatTitle}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleShare}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card border border-border text-text-secondary hover:text-text-primary hover:bg-surface-elevated transition-colors text-[14px] font-medium shadow-sm"
+        >
+          <span className="material-symbols-outlined text-[16px] text-text-muted">ios_share</span>
+          <span className="hidden sm:inline">Share</span>
+        </button>
+
+        <button
+          onClick={handleExport}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-card border border-border text-text-secondary hover:text-text-primary hover:bg-surface-elevated transition-colors text-[14px] font-medium shadow-sm"
+        >
+          <span className="material-symbols-outlined text-[16px] text-text-muted">download</span>
+          <span className="hidden sm:inline">Export BIS Report</span>
+        </button>
+
+        <a
+          href="https://www.bis.gov.in/?lang=en"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-brand-primary text-white hover:bg-brand-hover transition-all text-[14px] font-semibold shadow-sm"
+        >
+          <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+          <span className="hidden sm:inline">BIS Portal</span>
+        </a>
+
+        <div className="w-8 h-8 rounded-full bg-surface-elevated border border-border text-text-primary flex items-center justify-center ml-1 font-semibold text-xs shadow-sm transition-colors">
+          <span className="material-symbols-outlined text-[18px]">person</span>
         </div>
       </div>
     </header>
