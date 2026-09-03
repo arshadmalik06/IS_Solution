@@ -1,40 +1,67 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-
-type Theme = 'light' | 'dark'
+import type { ThemeMode } from '../types'
 
 interface ThemeContextType {
-  theme: Theme
+  theme: ThemeMode
   toggleTheme: () => void
+  setTheme: (theme: ThemeMode) => void
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Check local storage first
-    const saved = localStorage.getItem('bis-theme')
-    if (saved === 'light' || saved === 'dark') {
-      return saved
+  const [theme, setThemeState] = useState<ThemeMode>(() => {
+    // Check local storage first (from old implementation or settings)
+    const settingsSaved = localStorage.getItem('qubis_settings')
+    if (settingsSaved) {
+      try {
+        const parsed = JSON.parse(settingsSaved)
+        if (parsed.theme) return parsed.theme
+      } catch (e) {}
     }
-    // Default to dark mode if no preference found
-    return 'dark'
+    const saved = localStorage.getItem('bis-theme')
+    if (saved === 'light' || saved === 'dark' || saved === 'system') {
+      return saved as ThemeMode
+    }
+    // Default to system
+    return 'system'
   })
 
   useEffect(() => {
     localStorage.setItem('bis-theme', theme)
-    if (theme === 'dark') {
+    
+    let activeTheme = theme;
+    if (theme === 'system') {
+      activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    if (activeTheme === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark')
     } else {
       document.documentElement.setAttribute('data-theme', 'light')
     }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (theme === 'system') {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')
+      }
+    };
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+
   }, [theme])
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark')
+    setThemeState(prev => prev === 'dark' ? 'light' : 'dark')
+  }
+
+  const setTheme = (newTheme: ThemeMode) => {
+    setThemeState(newTheme);
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
       {children}
     </ThemeContext.Provider>
   )

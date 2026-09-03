@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
+import { useSettings } from '../hooks/useSettings'
 import type { ChatSession } from '../types'
 
 type SidebarProps = {
@@ -19,8 +20,15 @@ const NAV_ITEMS = [
 export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage, onCloseMobile }: SidebarProps) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { theme, toggleTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+  const { updateSettings } = useSettings()
   const [searchQuery, setSearchQuery] = useState('')
+
+  const handleToggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark'
+    setTheme(newTheme)
+    updateSettings({ theme: newTheme })
+  }
 
   const filteredSessions = sessions.filter(s =>
     s.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -144,7 +152,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             Theme
           </span>
           <button
-            onClick={toggleTheme}
+            onClick={handleToggleTheme}
             className="group flex items-center gap-1.5 h-7 px-2.5 rounded-full bg-sidebar-surface hover:bg-sidebar-border border border-sidebar-border transition-all shadow-sm text-sidebar-text-active"
             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
@@ -168,7 +176,10 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
               <span className="text-[11px] text-brand-accent truncate font-semibold">MSME Licensee</span>
             </div>
           </div>
-          <button className="p-1.5 rounded-lg text-sidebar-text hover:text-sidebar-text-active hover:bg-sidebar-surface transition-colors">
+          <button 
+            onClick={() => handleNav('/settings')}
+            className="p-1.5 rounded-lg text-sidebar-text hover:text-sidebar-text-active hover:bg-sidebar-surface transition-colors"
+          >
             <span className="material-symbols-outlined text-[18px]">settings</span>
           </button>
         </div>

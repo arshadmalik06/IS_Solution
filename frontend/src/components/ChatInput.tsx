@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { useSettings } from '../hooks/useSettings'
 
 type ChatInputProps = {
   onSend: (text: string) => void
@@ -9,6 +10,7 @@ export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
   const [input, setInput] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [isListening, setIsListening] = useState(false)
+  const { settings } = useSettings()
 
   // Auto-resize textarea
   useEffect(() => {
@@ -26,9 +28,11 @@ export default function ChatInput({ onSend, isLoading }: ChatInputProps) {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
+    if (settings.chatPreferences.enterToSubmit) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault()
+        handleSend()
+      }
     }
   }
 

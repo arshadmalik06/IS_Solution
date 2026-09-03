@@ -1,8 +1,21 @@
-import { useState, useCallback, useRef } from 'react'
+import React, { createContext, useContext, useState, useCallback, useRef } from 'react'
 import { streamChat } from '../api/chat'
 import type { Message, Source, ChatSession } from '../types'
 
-export function useChat() {
+interface ChatContextType {
+  messages: Message[];
+  isLoading: boolean;
+  error: string | null;
+  sessions: ChatSession[];
+  sendMessage: (text: string) => Promise<void>;
+  clearChat: () => void;
+  clearHistory: () => void;
+  exportData: () => void;
+}
+
+const ChatContext = createContext<ChatContextType | undefined>(undefined);
+
+export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -95,12 +108,47 @@ export function useChat() {
     setError(null)
   }, [])
 
-  return {
-    messages,
-    isLoading,
-    error,
-    sessions,
-    sendMessage,
-    clearChat,
+  const clearHistory = useCallback(() => {
+    setSessions([]);
+    clearChat();
+  }, [clearChat]);
+
+  const exportData = useCallback(() => {
+    const data = {
+      messages,
+      sessions
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `qubis_export_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [messages, sessions]);
+
+  return (
+    <ChatContext.Provider value={{
+      messages,
+      isLoading,
+      error,
+      sessions,
+      sendMessage,
+      clearChat,
+      clearHistory,
+      exportData,
+    }}>
+      {children}
+    </ChatContext.Provider>
+  );
+};
+
+export function useChat() {
+  const context = useContext(ChatContext)
+  if (context === undefined) {
+    throw new Error('useChat must be used within a ChatProvider')
   }
+  return context
 }

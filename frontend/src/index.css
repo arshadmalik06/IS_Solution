@@ -251,3 +251,81 @@ textarea {
 .animate-pulse-dot {
   animation: pulse-dot 1.4s ease-in-out infinite;
 }
+
+/* ── UI Animations ── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-down {
+  animation: slide-down 0.4s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+/* ── Accessibility Overrides ── */
+
+/* Font Size */
+html[data-font-size="small"] body {
+  font-size: 12px;
+  line-height: 18px;
+}
+html[data-font-size="large"] body {
+  font-size: 16px;
+  line-height: 26px;
+}
+html[data-font-size="small"] .prose-qubis {
+  font-size: 12px;
+}
+html[data-font-size="large"] .prose-qubis {
+  font-size: 16px;
+}
+
+/* High Contrast Mode */
+html.high-contrast body {
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #f0f0f0;
+  --theme-text-muted: #dcdcdc;
+  --theme-border: #ffffff;
+  --theme-border-inner: #ffffff;
+  --theme-brand-primary: #ffff00;
+  --theme-brand-hover: #e6e600;
+  --theme-brand-accent: #ffff00;
+  --theme-sidebar-text: #ffffff;
+  --theme-sidebar-text-active: #ffff00;
+}
+html.high-contrast[data-theme="light"] body {
+  --theme-text-primary: #000000;
+  --theme-text-secondary: #111111;
+  --theme-text-muted: #333333;
+  --theme-border: #000000;
+  --theme-border-inner: #000000;
+  --theme-brand-primary: #0000ee;
+  --theme-brand-hover: #0000cd;
+  --theme-brand-accent: #0000ee;
+  --theme-sidebar-text: #000000;
+  --theme-sidebar-text-active: #0000ee;
+}
+
+/* Reduce Motion */
+html.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

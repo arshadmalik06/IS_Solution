@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import type { Source } from '../../types'
+import { useSettings } from '../../hooks/useSettings'
 
 type SourcesBarProps = {
   sources: Source[]
 }
 
 export default function SourcesBar({ sources }: SourcesBarProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const { settings } = useSettings()
+  const [isOpen, setIsOpen] = useState(settings.chatPreferences.showSources)
 
   const sourceIds = sources
     .map(s => s.metadata.standard_id)
