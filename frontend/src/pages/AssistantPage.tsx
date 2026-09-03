@@ -30,7 +30,7 @@ export default function AssistantPage() {
         <div className="flex-1 overflow-y-auto pb-40 px-6 md:px-10 lg:px-12">
           <div className="w-full mx-auto pt-6 md:pt-8 space-y-5 max-w-4xl">
             {messages.length === 0 ? (
-              <EmptyState onQuickAction={sendMessage} />
+              <EmptyState />
             ) : (
               messages.map(msg =>
                 msg.role === 'user' ? (
@@ -45,7 +45,7 @@ export default function AssistantPage() {
         </div>
 
         {/* Fixed Bottom Input */}
-        <ChatInput onSend={sendMessage} isLoading={isLoading} />
+        <ChatInput onSend={sendMessage} isLoading={isLoading} isInitialState={messages.length === 0} />
       </div>
     </Layout>
   )

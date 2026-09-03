@@ -71,7 +71,7 @@ export default function Header({ chatTitle, onToggleSidebar }: HeaderProps) {
           href="https://www.bis.gov.in/?lang=en"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-brand-primary text-white hover:bg-brand-hover transition-all text-[14px] font-semibold shadow-sm"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#E9441F] text-white hover:bg-[#CC3A1A] transition-all text-[14px] font-semibold shadow-sm"
         >
           <span className="material-symbols-outlined text-[16px]">open_in_new</span>
           <span className="hidden sm:inline">BIS Portal</span>

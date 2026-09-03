@@ -58,7 +58,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
         </div>
         <button
           onClick={() => { onNewChat(); handleNav('/') }}
-          className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-primary text-white hover:bg-brand-hover transition-all shadow-sm"
+          className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#E9441F] text-white hover:bg-[#CC3A1A] transition-all shadow-sm"
           title="New Chat"
         >
           <span className="material-symbols-outlined text-[18px]">add</span>
@@ -69,7 +69,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
       <div className="px-4 pt-4 pb-2">
         <button
           onClick={() => { onNewChat(); handleNav('/') }}
-          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-brand-primary text-white hover:bg-brand-hover transition-all shadow-sm group"
+          className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#E9441F] text-white hover:bg-[#CC3A1A] transition-all shadow-sm group"
         >
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px] text-white/80 group-hover:text-white transition-colors">edit_square</span>
@@ -105,7 +105,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
                 onClick={() => handleNav(item.path)}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-left relative overflow-hidden ${
                   isActive(item.path)
-                    ? 'bg-brand-primary text-white font-semibold shadow-sm'
+                    ? 'bg-[#E9441F] text-white font-semibold shadow-sm'
                     : 'text-sidebar-text hover:bg-sidebar-surface hover:text-sidebar-text-active'
                 }`}
               >
