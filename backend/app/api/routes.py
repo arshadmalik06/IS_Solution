@@ -41,12 +41,9 @@ async def chat_stream(request: ChatRequest):
                     })
                 }
         
-        # 2. Stream the actual LLM text tokens as standard "message" events
+        # 2. Stream the actual LLM text tokens
         async for chunk in llm_agent.generate_stream(request.query, context_chunks):
-            yield {
-                "event": "message",
-                "data": chunk
-            }
+            yield chunk
 
     return EventSourceResponse(event_generator())
 

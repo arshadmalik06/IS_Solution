@@ -50,9 +50,9 @@
 
 .background-waves {
   position: absolute;
-  left: 0;
+  left: -10%;
   bottom: 0;
-  width: 100%;
+  width: 120%;
   height: 240px;
   pointer-events: none;
 }
@@ -84,30 +84,30 @@
 }
 
 .wave-main {
-  animation: subtleWaveMain 22s ease-in-out infinite alternate;
+  animation: subtleWaveMain 10s ease-in-out infinite alternate;
 }
 
 .wave-secondary {
-  animation: subtleWaveSecondary 29s ease-in-out infinite alternate;
+  animation: subtleWaveSecondary 13s ease-in-out infinite alternate;
 }
 
 .wave-beige {
-  animation: subtleWaveBeige 35s ease-in-out infinite alternate;
+  animation: subtleWaveBeige 16s ease-in-out infinite alternate;
 }
 
 @keyframes subtleWaveMain {
-  0% { transform: translate3d(-8px, 2px, 0); }
-  100% { transform: translate3d(8px, -2px, 0); }
+  0% { transform: translate3d(-4vw, 8px, 0); }
+  100% { transform: translate3d(4vw, -8px, 0); }
 }
 
 @keyframes subtleWaveSecondary {
-  0% { transform: translate3d(6px, 1px, 0); }
-  100% { transform: translate3d(-6px, -2px, 0); }
+  0% { transform: translate3d(5vw, 4px, 0); }
+  100% { transform: translate3d(-5vw, -4px, 0); }
 }
 
 @keyframes subtleWaveBeige {
-  0% { transform: translate3d(-5px, 1px, 0); }
-  100% { transform: translate3d(5px, -1px, 0); }
+  0% { transform: translate3d(-3vw, 5px, 0); }
+  100% { transform: translate3d(3vw, -5px, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
