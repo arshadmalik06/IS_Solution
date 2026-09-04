@@ -12,6 +12,7 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
   const [input, setInput] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isListening, setIsListening] = useState(false)
   const [isAttachmentOpen, setIsAttachmentOpen] = useState(false)
   const { settings } = useSettings()
 
@@ -43,6 +44,30 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
     // In a real app, we could store the 'type' to process the file differently.
     setIsAttachmentOpen(false)
     fileInputRef.current?.click()
+  const handleVoiceInput = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      return
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
+    const recognition = new SpeechRecognition()
+    recognition.lang = 'en-IN'
+    recognition.interimResults = false
+    recognition.maxAlternatives = 1
+
+    recognition.onstart = () => setIsListening(true)
+    recognition.onend = () => setIsListening(false)
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript
+      setInput(prev => prev + transcript)
+    }
+    recognition.onerror = () => setIsListening(false)
+
+    if (isListening) {
+      recognition.stop()
+    } else {
+      recognition.start()
+    }
   }
 
   const wrapperClasses = `chat-input-wrapper fixed inset-x-0 pointer-events-none z-30 flex flex-col items-center px-3 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] sm:p-4 sm:pb-6 ${isInitialState ? 'bottom-[max(1rem,calc(50%-11rem))]' : 'bottom-0'
@@ -83,9 +108,9 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
                 className="fixed inset-0 z-40"
                 onClick={() => setIsAttachmentOpen(false)}
               />
-              <div className="absolute bottom-full left-0 z-50 mb-3 flex w-64 max-w-[calc(100vw-1.5rem)] origin-bottom-left flex-col gap-1 rounded-xl border border-border bg-surface-card p-2 shadow-xl animate-fade-in-up">
-                <div className="px-3 py-1.5 text-[11px] font-semibold text-text-muted uppercase tracking-wider">
-                  Attach Document
+              <div className="absolute bottom-full left-0 z-50 mb-3 flex max-w-[calc(100vw-1.5rem)] origin-bottom-left flex-col gap-1 rounded-xl border border-border bg-surface-card p-3 shadow-xl animate-fade-in-up">
+                <div className="text-[13px] font-medium text-text-primary whitespace-nowrap">
+                  Feature not available
                 </div>
 
                 <button type="button" onClick={() => handleAttachmentClick('pdf')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
@@ -143,6 +168,18 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
               onTranscribed={text => setInput(prev => prev ? prev + ' ' + text : text)}
               disabled={isLoading}
             />
+            <button
+              type="button"
+              onClick={handleVoiceInput}
+              className={`p-2 rounded-xl transition-colors ${isListening
+                  ? 'text-red-400 bg-red-400/10'
+                  : 'text-text-muted hover:text-text-primary hover:bg-surface-hover'
+                }`}
+              title="Voice Input (English / Hindi / Regional)"
+              aria-label="Start voice input"
+            >
+              <span className="material-symbols-outlined text-[20px]">{isListening ? 'mic' : 'mic'}</span>
+            </button>
 
             <button
               type="button"
