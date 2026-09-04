@@ -4,6 +4,7 @@ import remarkGfm from 'remark-gfm'
 import type { Message } from '../../types'
 import SourcesBar from './SourcesBar'
 import LoadingIndicator from './LoadingIndicator'
+import { SpeakerButton } from '../voice/VoiceAssistantWidget'
 
 type AssistantMessageProps = {
   message: Message
@@ -89,6 +90,7 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
+                <SpeakerButton text={message.content} />
                 <button
                   type="button"
                   onClick={handleCopy}
