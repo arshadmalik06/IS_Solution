@@ -1,26 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useTheme } from '../hooks/useTheme'
 import { useSettings } from '../hooks/useSettings'
 import { useChat } from '../hooks/useChat'
-import type { ThemeMode, ToneType, FontSize } from '../types'
+import type { ToneType, FontSize } from '../types'
 
 export function SettingsPage() {
   const navigate = useNavigate();
-  const { setTheme } = useTheme();
   const { settings, updateSettings, resetSettings } = useSettings();
   const { clearHistory, exportData } = useChat();
 
-  const handleThemeChange = (newTheme: ThemeMode) => {
-    updateSettings({ theme: newTheme });
-    setTheme(newTheme);
-  };
-
-  const [activeSection, setActiveSection] = useState('general');
+  const [activeSection, setActiveSection] = useState('chat');
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['general', 'chat', 'accessibility', 'data', 'about'];
+      const sections = ['chat', 'accessibility', 'data', 'about'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -105,7 +98,6 @@ export function SettingsPage() {
         </div>
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
           <nav className="space-y-1.5">
-            <NavItem id="general" icon="monitor" label="General" />
             <NavItem id="chat" icon="chat" label="Chat Preferences" />
             <NavItem id="accessibility" icon="accessibility_new" label="Accessibility" />
             <NavItem id="data" icon="database" label="Data & Privacy" />
@@ -133,52 +125,6 @@ export function SettingsPage() {
             <h1 className="type-h1 text-text-primary mb-3">Settings</h1>
             <p className="text-text-secondary text-[18px] leading-relaxed">Manage your QuBIS account and application preferences.</p>
           </div>
-
-          {/* General Section */}
-          <section id="general" className="scroll-mt-10 animate-fade-in-up" style={{animationDelay: '100ms'}}>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
-                <span className="material-symbols-outlined text-[24px]">monitor</span>
-              </div>
-              <h2 className="type-h3 text-text-primary">General</h2>
-            </div>
-            
-            <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
-              <div className="border-b border-border p-4 sm:p-6">
-                <div className="mb-6">
-                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Theme Preference</h3>
-                  <p className="text-[14px] text-text-secondary leading-relaxed">Choose how QuBIS looks to you.</p>
-                </div>
-                
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  {[
-                    { id: 'light', icon: 'light_mode', label: 'Light' },
-                    { id: 'dark', icon: 'dark_mode', label: 'Dark' },
-                    { id: 'system', icon: 'brightness_auto', label: 'System' }
-                  ].map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => handleThemeChange(t.id as ThemeMode)}
-                      className={`relative flex flex-col items-center justify-center p-5 rounded-xl border-2 transition-all duration-200 ${
-                        settings.theme === t.id 
-                          ? 'border-brand-primary bg-brand-primary/5 text-brand-primary shadow-sm' 
-                          : 'border-border bg-surface-elevated text-text-secondary hover:border-brand-primary/50 hover:bg-brand-primary/5'
-                      }`}
-                    >
-                      <span className="material-symbols-outlined text-[32px] mb-3">{t.icon}</span>
-                      <span className="text-[14px] font-medium">{t.label}</span>
-                      {settings.theme === t.id && (
-                        <span className="absolute top-3 right-3 flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-40"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-primary"></span>
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
 
           {/* Chat Preferences Section */}
           <section id="chat" className="scroll-mt-10 animate-fade-in-up" style={{animationDelay: '150ms'}}>
@@ -355,7 +301,7 @@ export function SettingsPage() {
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-primary/20 blur-[100px] rounded-full pointer-events-none"></div>
 
                <div className="relative z-10 flex flex-col items-center">
-                 <img src="/qubis-logo.png" alt="QuBIS Logo" className="w-20 h-20 mb-6 drop-shadow-xl hover:scale-110 transition-transform duration-500" />
+                 <img src="/logo.png" alt="QuBIS Logo" className="w-20 h-20 mb-6 drop-shadow-xl hover:scale-110 transition-transform duration-500" />
                  <h3 className="type-h2 text-text-primary">QuBIS Intelligent Assistant</h3>
                  <div className="inline-flex items-center gap-2 mt-3">
                    <span className="px-2.5 py-0.5 rounded-full bg-surface-elevated border border-border text-[12px] font-semibold text-text-muted">Version 1.0.0</span>

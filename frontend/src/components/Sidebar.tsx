@@ -37,7 +37,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
       <div className="p-4 flex items-center border-b border-sidebar-border">
         <div className="flex items-center gap-2.5">
           <img
-            src="/qubis-logo.png"
+            src="/logo.png"
             alt="QuBIS Logo"
             className="h-8 w-auto object-contain drop-shadow-sm brightness-105"
           />

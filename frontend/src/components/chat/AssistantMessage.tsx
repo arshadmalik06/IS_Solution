@@ -54,13 +54,13 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
           <div className="flex items-center justify-between pb-3.5 border-b border-border mb-4 transition-colors">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-elevated border border-border shadow-sm p-1">
-                <img src="/qubis-logo.png" alt="QuBIS" className="w-full h-full object-contain" />
+                <img src="/logo.png" alt="QuBIS" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h3 className="text-[16px] font-bold text-text-primary leading-tight tracking-tight transition-colors">QuBIS Verified Assistant</h3>
                 <p className="text-[11px] text-text-muted transition-colors">Bureau of Indian Standards Statutory Intelligence</p>
               </div>
-              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-status-success/15 text-status-success border border-status-success/25 flex items-center gap-1 ml-2 transition-colors">
+              <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-status-green/15 text-status-green border border-status-green/25 flex items-center gap-1 ml-2 transition-colors">
                 <span className="material-symbols-outlined text-[13px]">verified</span>verified
               </span>
             </div>

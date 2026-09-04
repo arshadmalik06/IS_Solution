@@ -2,35 +2,35 @@
 
 :root, [data-theme="dark"] {
   /* ── Background & Surfaces ── */
-  --theme-bg: #090C15;
-  --theme-bg-warm: #090C15;
-  --theme-surface: #111625;
-  --theme-surface-elevated: #182035;
-  --theme-surface-user: #1C2640;
-  --theme-surface-card: #141A2B;
+  --theme-bg: #191B1F;
+  --theme-bg-warm: #191B1F;
+  --theme-surface: #272A2F;
+  --theme-surface-elevated: #272A2F;
+  --theme-surface-user: #272A2F;
+  --theme-surface-card: #191B1F;
   
   /* ── Sidebar (Always Dark) ── */
-  --theme-sidebar-bg: #05070D;
-  --theme-sidebar-surface: #0E1321;
-  --theme-sidebar-border: #1B243B;
-  --theme-sidebar-text: #94a3b8;
-  --theme-sidebar-text-active: #ffffff;
+  --theme-sidebar-bg: #191B1F;
+  --theme-sidebar-surface: #272A2F;
+  --theme-sidebar-border: #3A3D42;
+  --theme-sidebar-text: #A5A7AA;
+  --theme-sidebar-text-active: #E6E6E4;
 
   /* ── Primary Accents ── */
-  --theme-brand-primary: #1d6fe5;
-  --theme-brand-hover: #2563eb;
-  --theme-brand-accent: #38bdf8;
-  --theme-brand-glow: rgba(29, 111, 229, 0.35);
+  --theme-brand-primary: #191B1F;
+  --theme-brand-hover: #272A2F;
+  --theme-brand-accent: #E6E6E4;
+  --theme-brand-glow: rgba(25, 27, 31, 0.35);
 
   /* ── Borders ── */
-  --theme-border: #222C44;
-  --theme-border-active: #2b7fff;
-  --theme-border-inner: #1D263B;
+  --theme-border: #3A3D42;
+  --theme-border-active: #A5A7AA;
+  --theme-border-inner: #3A3D42;
 
   /* ── Typography Colors ── */
-  --theme-text-primary: #f1f5f9;
-  --theme-text-secondary: #d4e4fa;
-  --theme-text-muted: #94a3b8;
+  --theme-text-primary: #E6E6E4;
+  --theme-text-secondary: #A5A7AA;
+  --theme-text-muted: #777A7F;
 
   /* ── Status Colors ── */
   --theme-status-green: #34d399;
@@ -71,41 +71,41 @@
 
 [data-theme="light"] {
   /* ── Background & Surfaces ── */
-  --theme-bg: #E0EFFF; /* Sky blue background */
-  --theme-bg-warm: #D6EBFF;
-  --theme-surface: #FFFFFF;
-  --theme-surface-elevated: #F0F7FF; /* Icy blue for elevated surfaces */
-  --theme-surface-user: #1B6CFF;
-  --theme-surface-card: #FFFFFF;
+  --theme-bg: #191B1F;
+  --theme-bg-warm: #191B1F;
+  --theme-surface: #272A2F;
+  --theme-surface-elevated: #272A2F;
+  --theme-surface-user: #272A2F;
+  --theme-surface-card: #191B1F;
   
   /* ── Sidebar ── */
-  --theme-sidebar-bg: #0A2540; /* Premium deep cobalt to anchor the sky blue */
-  --theme-sidebar-surface: #12365A;
-  --theme-sidebar-border: #1D436D;
-  --theme-sidebar-text: #9EB6D1;
-  --theme-sidebar-text-active: #FFFFFF;
+  --theme-sidebar-bg: #191B1F;
+  --theme-sidebar-surface: #272A2F;
+  --theme-sidebar-border: #3A3D42;
+  --theme-sidebar-text: #A5A7AA;
+  --theme-sidebar-text-active: #E6E6E4;
 
   /* ── Primary Accents ── */
-  --theme-brand-primary: #1B6CFF; /* Vibrant Royal/Cerulean Blue */
-  --theme-brand-hover: #0054ED; 
-  --theme-brand-accent: #1B6CFF;
-  --theme-brand-glow: rgba(27, 108, 255, 0.25);
+  --theme-brand-primary: #191B1F;
+  --theme-brand-hover: #272A2F;
+  --theme-brand-accent: #E6E6E4;
+  --theme-brand-glow: rgba(25, 27, 31, 0.35);
 
   /* ── Borders ── */
-  --theme-border: #BCD6F5; /* Harmonious sky blue border */
-  --theme-border-active: #1B6CFF;
-  --theme-border-inner: #C9E0FA;
+  --theme-border: #3A3D42;
+  --theme-border-active: #A5A7AA;
+  --theme-border-inner: #3A3D42;
 
   /* ── Typography ── */
-  --theme-text-primary: #0A2540; /* Deep ink blue for highest contrast */
-  --theme-text-secondary: #173861;
-  --theme-text-muted: #5B7A9E;
+  --theme-text-primary: #E6E6E4;
+  --theme-text-secondary: #A5A7AA;
+  --theme-text-muted: #777A7F;
 
   /* ── Status Colors ── */
-  --theme-status-green: #238B45;
-  --theme-status-green-bg: #E8F4EB;
-  --theme-status-red: #E53935;
-  --theme-status-red-bg: #FFE4E2;
+  --theme-status-green: #34d399;
+  --theme-status-green-bg: rgba(52, 211, 153, 0.14);
+  --theme-status-red: #ff7171;
+  --theme-status-red-bg: rgba(239, 68, 68, 0.16);
   --theme-status-amber: #fbbf24;
   --theme-status-amber-bg: rgba(251, 191, 36, 0.14);
 }
@@ -143,6 +143,10 @@
   --color-status-red-bg: var(--theme-status-red-bg);
   --color-status-amber: var(--theme-status-amber);
   --color-status-amber-bg: var(--theme-status-amber-bg);
+
+  /* ── Overrides for Pure Colors ── */
+  --color-white: #E6E6E4;
+  --color-black: #191B1F;
 
   /* ── Fonts ── */
   --font-sans: 'Figtree', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

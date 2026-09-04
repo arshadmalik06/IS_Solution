@@ -20,7 +20,7 @@ export default function SourcesBar({ sources }: SourcesBarProps) {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-surface-elevated border border-border flex items-center justify-center transition-colors p-1">
-            <img src="/qubis-logo.png" alt="QuBIS" className="w-full h-full object-contain" />
+            <img src="/logo.png" alt="QuBIS" className="w-full h-full object-contain" />
           </div>
           <div className="flex items-center gap-2">
             <span className="text-[16px] text-text-primary font-bold tracking-tight transition-colors">QuBIS Intelligence</span>

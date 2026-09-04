@@ -45,7 +45,7 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
 
         {/* Mobile Brand */}
         <div className="flex items-center gap-2 md:hidden">
-          <img src="/qubis-logo.png" alt="QuBIS" className="h-7 w-auto object-contain" />
+          <img src="/logo.png" alt="QuBIS" className="h-7 w-auto object-contain" />
           <span className="font-bold text-[16px] text-text-primary tracking-tight">QuBIS</span>
         </div>
 

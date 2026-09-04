@@ -4,7 +4,7 @@ export default function EmptyState() {
       {/* Logo */}
       <div className="w-28 h-20 flex items-center justify-center">
         <img
-          src="/qubis-logo.png"
+          src="/logo.png"
           alt="QuBIS Logo"
           className="w-full h-full object-contain drop-shadow-md brightness-105"
         />
