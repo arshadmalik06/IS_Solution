@@ -1,5 +1,3 @@
-import React from 'react'
-
 interface SplitScreenProps {
   filename: string
   page: number

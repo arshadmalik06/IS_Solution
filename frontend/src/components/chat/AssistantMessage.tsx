@@ -13,7 +13,6 @@ type AssistantMessageProps = {
 
 export default function AssistantMessage({ message, onOpenPdf }: AssistantMessageProps) {
   const [copied, setCopied] = useState(false)
-  const [isHelpful, setIsHelpful] = useState(false)
   const time = message.timestamp.toLocaleTimeString('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
@@ -28,19 +27,6 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
     } catch {}
   }
 
-  const handleForward = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'QuBIS response', text: message.content })
-      } else {
-        await navigator.clipboard.writeText(message.content)
-        setCopied(true)
-        window.setTimeout(() => setCopied(false), 1800)
-      }
-    } catch {}
-  }
-
-  // Extract the filename and page number from your backend's metadata
   const firstSource = message.sources?.[0] as any;
   const metadata = firstSource?.metadata;
   const hasValidSource = metadata?.filename && metadata?.page_number;
@@ -105,7 +91,7 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
                   Always cross-verify statutory clauses with official BIS Gazette publications for commercial production.
                 </p>
               </div>
-                            <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
+              <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
                 <SpeakerButton text={message.content} />
                 <button
                   type="button"
