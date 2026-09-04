@@ -6,36 +6,81 @@ import { API_BASE_URL } from '../../api/connection'
 // ---------------------------------------------------------------------------
 
 let activeAudio: HTMLAudioElement | null = null
+let activeUrl: string | null = null
+// Callback of whichever SpeakerButton currently owns playback, so it can be
+// told when playback ends for ANY reason (finished, stopped, superseded, error).
+let activeOnStop: (() => void) | null = null
 
-export async function speakText(text: string, language: string = 'en'): Promise<void> {
-    // Stop any currently playing audio
-    if (activeAudio) {
-        activeAudio.pause()
-        activeAudio = null
+/** Stop any in-progress TTS playback immediately and notify its owner button. */
+export function stopSpeaking(): void {
+    const audio = activeAudio
+    const url = activeUrl
+    const onStop = activeOnStop
+    activeAudio = null
+    activeUrl = null
+    activeOnStop = null
+
+    if (audio) {
+        audio.onended = null
+        audio.onerror = null
+        audio.pause()
+        audio.currentTime = 0
     }
+    if (url) URL.revokeObjectURL(url)
+    onStop?.()
+}
 
+export async function speakText(
+    text: string,
+    language: string = 'en',
+    onStop?: () => void,
+): Promise<void> {
+    // Stop (and notify) any currently playing audio before starting new audio.
+    stopSpeaking()
+
+    let response: Response
     try {
-        const response = await fetch(`${API_BASE_URL}/api/voice/tts`, {
+        response = await fetch(`${API_BASE_URL}/api/voice/tts`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text, language }),
         })
-
-        if (!response.ok) {
-            throw new Error(`TTS API Error: ${response.status}`)
-        }
-
-        const blob = await response.blob()
-        const url = URL.createObjectURL(blob)
-        const audio = new Audio(url)
-        activeAudio = audio
-        await audio.play()
-        audio.onended = () => {
-            URL.revokeObjectURL(url)
-            if (activeAudio === audio) activeAudio = null
-        }
     } catch (error) {
-        console.error('[TTS] Failed to speak text:', error)
+        onStop?.()
+        console.error('[TTS] Failed to reach TTS service:', error)
+        throw error
+    }
+
+    if (!response.ok) {
+        onStop?.()
+        throw new Error(`TTS API Error: ${response.status}`)
+    }
+
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    const audio = new Audio(url)
+
+    activeAudio = audio
+    activeUrl = url
+    activeOnStop = onStop ?? null
+
+    const finish = () => {
+        if (activeAudio === audio) {
+            activeAudio = null
+            activeUrl = null
+            activeOnStop = null
+            URL.revokeObjectURL(url)
+        }
+        onStop?.()
+    }
+    audio.onended = finish
+    audio.onerror = finish
+
+    try {
+        await audio.play()
+    } catch (error) {
+        finish()
+        console.error('[TTS] Playback failed:', error)
         throw error
     }
 }
@@ -52,27 +97,36 @@ type SpeakerButtonProps = {
 
 export function SpeakerButton({ text, language = 'en', className = '' }: SpeakerButtonProps) {
     const [isPlaying, setIsPlaying] = useState(false)
+    // Tracks the audio started by THIS button so unmount cleanup only stops our own.
+    const ownsPlaybackRef = useRef(false)
+
+    const markStopped = useCallback(() => {
+        ownsPlaybackRef.current = false
+        setIsPlaying(false)
+    }, [])
 
     const handleSpeak = async () => {
         if (isPlaying) {
-            // Stop playback
-            if (activeAudio) {
-                activeAudio.pause()
-                activeAudio = null
-            }
-            setIsPlaying(false)
+            // Second click → stop playback (markStopped runs via the onStop callback).
+            stopSpeaking()
             return
         }
 
         setIsPlaying(true)
+        ownsPlaybackRef.current = true
         try {
-            await speakText(text, language)
+            await speakText(text, language, markStopped)
         } catch {
-            // Ignore — user sees the button state reset
-        } finally {
-            setIsPlaying(false)
+            // speakText already invoked markStopped on failure.
         }
     }
+
+    // Stop our audio if the component unmounts mid-playback.
+    useEffect(() => {
+        return () => {
+            if (ownsPlaybackRef.current) stopSpeaking()
+        }
+    }, [])
 
     return (
         <button
