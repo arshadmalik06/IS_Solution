@@ -7,9 +7,10 @@ import LoadingIndicator from './LoadingIndicator'
 
 type AssistantMessageProps = {
   message: Message
+  onOpenPdf?: (filename: string, page: number) => void
 }
 
-export default function AssistantMessage({ message }: AssistantMessageProps) {
+export default function AssistantMessage({ message, onOpenPdf }: AssistantMessageProps) {
   const [copied, setCopied] = useState(false)
   const [isHelpful, setIsHelpful] = useState(false)
   const time = message.timestamp.toLocaleTimeString('en-IN', {
@@ -23,7 +24,7 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
       await navigator.clipboard.writeText(message.content)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1800)
-    } catch { /* Clipboard access is unavailable. */ }
+    } catch {}
   }
 
   const handleForward = async () => {
@@ -35,22 +36,24 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
         setCopied(true)
         window.setTimeout(() => setCopied(false), 1800)
       }
-    } catch {
-      // The user dismissed the native share dialog or sharing is unavailable.
-    }
+    } catch {}
   }
+
+  // Extract the filename and page number from your backend's metadata
+  const firstSource = message.sources?.[0] as any;
+  const metadata = firstSource?.metadata;
+  const hasValidSource = metadata?.filename && metadata?.page_number;
 
   return (
     <div className="flex w-full my-1 justify-start">
       <div className="relative w-full max-w-4xl space-y-3">
-        {/* Sources Bar */}
-        {message.sources && message.sources.length > 0 && (
+        
+        {/* SAFE SOURCES BAR: Hides itself for our complex PDFs so it doesn't crash */}
+        {message.sources && message.sources.length > 0 && !hasValidSource && (
           <SourcesBar sources={message.sources} />
         )}
 
-        {/* Main Response Card */}
         <div className="p-5 md:p-6 rounded-2xl rounded-tl-sm shadow-[0_4px_20px_rgba(0,0,0,0.15)] bg-surface-card border border-border transition-colors">
-          {/* Header */}
           <div className="flex items-center justify-between pb-3.5 border-b border-border mb-4 transition-colors">
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-surface-elevated border border-border shadow-sm p-1">
@@ -67,7 +70,7 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
             <span className="text-[11px] text-text-muted font-medium transition-colors">{time}</span>
           </div>
 
-          {/* Content */}
+          {/* Typing Animation */}
           {message.content ? (
             <div className="prose-qubis" data-chat-content>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.content}</ReactMarkdown>
@@ -75,6 +78,19 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
           ) : message.isStreaming ? (
             <LoadingIndicator />
           ) : null}
+
+          {/* PDF VERIFICATION BUTTON */}
+          {!message.isStreaming && hasValidSource && onOpenPdf && (
+            <div className="mt-5 pt-4 border-t border-border">
+              <button
+                onClick={() => onOpenPdf(metadata.filename, metadata.page_number)}
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium px-4 py-2 rounded-lg shadow-sm transition-colors"
+              >
+                <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                Verify in Original PDF: {metadata.filename} (Page {metadata.page_number})
+              </button>
+            </div>
+          )}
 
           {/* Action Buttons */}
           {!message.isStreaming && message.content && (
@@ -89,42 +105,12 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
                 </p>
               </div>
               <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
-                <button
-                  type="button"
-                  onClick={handleCopy}
-                  className="rounded-lg border border-transparent p-1.5 transition-colors hover:border-border hover:bg-surface-elevated hover:text-text-primary"
-                  title={copied ? 'Copied' : 'Copy'}
-                  aria-label={copied ? 'Response copied' : 'Copy response'}
-                >
+                <button type="button" onClick={handleCopy} className="rounded-lg border border-transparent p-1.5 hover:border-border hover:bg-surface-elevated">
                   <span className="material-symbols-outlined text-[17px]">content_copy</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsHelpful(!isHelpful)}
-                  aria-pressed={isHelpful}
-                  className={`rounded-lg border p-1.5 transition-colors ${isHelpful ? 'border-brand-primary/40 bg-brand-primary/10 text-brand-primary' : 'border-transparent hover:border-border hover:bg-surface-elevated hover:text-text-primary'}`}
-                  title={isHelpful ? 'Marked helpful' : 'Mark as helpful'}
-                  aria-label={isHelpful ? 'Marked as helpful' : 'Mark response as helpful'}
-                >
-                  <span className="material-symbols-outlined text-[17px]">thumb_up</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={handleForward}
-                  className="rounded-lg border border-transparent p-1.5 transition-colors hover:border-border hover:bg-surface-elevated hover:text-text-primary"
-                  title="Share response"
-                  aria-label="Share response"
-                >
-                  <span className="material-symbols-outlined text-[17px]">forward</span>
                 </button>
               </div>
             </div>
           )}
-        </div>
-
-        {/* Timestamp below card */}
-        <div className="flex items-center justify-end text-[11px] pt-1 text-text-muted transition-colors">
-          <span>{time}</span>
         </div>
       </div>
     </div>

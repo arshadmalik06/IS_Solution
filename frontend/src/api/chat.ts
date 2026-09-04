@@ -20,38 +20,70 @@ export async function streamChat(
       body: JSON.stringify({ query, session_id: sessionId }),
     })
 
-    if (!response.ok) {
-      throw new Error(`Chat API Error: ${response.status} ${response.statusText}`)
-    }
-    if (!response.body) {
-      throw new Error('No readable stream available from the server.')
-    }
+    if (!response.ok) throw new Error(`Chat API Error: ${response.status}`)
+    if (!response.body) throw new Error('No readable stream available.')
 
     const reader = response.body.getReader()
     const decoder = new TextDecoder()
+    
+    let buffer = ''
 
     while (true) {
       const { value, done } = await reader.read()
       if (done) break
 
-      const chunk = decoder.decode(value, { stream: true })
-      const lines = chunk.split('\n')
-
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6))
-            if (data.sources) {
-              callbacks.onSources(data.sources)
-            } else if (data.token) {
-              callbacks.onToken(data.token)
-            }
-          } catch {
-            // Ignore parse errors for incomplete SSE chunks
-          }
+      buffer += decoder.decode(value, { stream: true })
+      
+      // 1. EXTRACT PDF METADATA
+      if (buffer.includes('"filename"')) {
+        const fileMatch = buffer.match(/"filename"\s*:\s*"([^"]+)"/)
+        const pageMatch = buffer.match(/"page_number"\s*:\s*(\d+)/)
+        
+        if (fileMatch && pageMatch) {
+          callbacks.onSources([{ 
+            metadata: { 
+              filename: fileMatch[1], 
+              page_number: parseInt(pageMatch[1], 10) 
+            } 
+          } as any])
+          buffer = buffer.replace(/"filename"\s*:\s*"[^"]+"/, '')
         }
       }
+
+      // 2. EXTRACT TEXT TOKENS (With bulletproof decoding)
+      const tokenRegex = /"token"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/g
+      let match
+      let lastIndex = 0
+      
+      while ((match = tokenRegex.exec(buffer)) !== null) {
+        let token = match[1];
+
+        // Decodes both double-escaped (\\u) and single-escaped (\u) Unicode instantly
+        token = token.replace(/(?:\\\\|\\)u([0-9a-fA-F]{4})/g, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+        
+        // FIX: Matches ANY number of backslashes followed by 'n' and turns them into a single clean line break
+        token = token.replace(/\\+n/g, '\n');
+        
+        // Clean up tabs and quotes
+        token = token.replace(/\\+t/g, '\t');
+        token = token.replace(/\\+"/g, '"');
+        
+        // Failsafe: Strips any leftover stray backslashes sitting in front of special symbols like ° or ±
+        token = token.replace(/\\+([°±])/g, '$1');
+        
+        // Catch any remaining random double backslashes
+        token = token.replace(/\\\\/g, '');
+
+        callbacks.onToken(token)
+        
+        lastIndex = match.index + match[0].length
+      }
+      
+      if (lastIndex > 0) {
+        buffer = buffer.substring(lastIndex)
+      }
     }
+    
     callbacks.onComplete()
   } catch (error) {
     callbacks.onError(error instanceof Error ? error : new Error(String(error)))
