@@ -6,6 +6,7 @@ import UserMessage from '../components/chat/UserMessage'
 import AssistantMessage from '../components/chat/AssistantMessage'
 import EmptyState from '../components/chat/EmptyState'
 import SplitScreen from '../components/chat/SplitScreen' 
+import ChatBackground from '../components/chat/ChatBackground'
 
 export default function AssistantPage() {
   const { messages, isLoading, sessions, sendMessage, clearChat } = useChat()
@@ -28,7 +29,8 @@ export default function AssistantPage() {
         
         {/* Left Side: Chat Interface */}
         <div className={`flex flex-col h-full transition-all duration-300 relative ${activePdf ? 'w-1/2' : 'w-full'}`}>
-          <div className="flex-1 overflow-y-auto px-4 pb-36 sm:px-6 sm:pb-40 md:px-10 lg:px-12">
+          <ChatBackground />
+          <div className="flex-1 overflow-y-auto px-4 pb-36 sm:px-6 sm:pb-40 md:px-10 lg:px-12 relative z-10">
             <div className={`mx-auto w-full max-w-4xl ${messages.length === 0 ? 'min-h-full' : 'space-y-5 pt-6 md:pt-8'}`}>
               {messages.length === 0 ? (
                 <EmptyState />

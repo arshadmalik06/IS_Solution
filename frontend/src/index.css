@@ -71,43 +71,43 @@
 
 [data-theme="light"] {
   /* ── Background & Surfaces ── */
-  --theme-bg: #191B1F;
-  --theme-bg-warm: #191B1F;
-  --theme-surface: #272A2F;
-  --theme-surface-elevated: #272A2F;
-  --theme-surface-user: #272A2F;
-  --theme-surface-card: #191B1F;
+  --theme-bg: #FFFFFF;
+  --theme-bg-warm: #F5EFEB;
+  --theme-surface: #F8FAFC;
+  --theme-surface-elevated: #E2EBF3;
+  --theme-surface-user: #E8EFF5;
+  --theme-surface-card: #FFFFFF;
   
   /* ── Sidebar ── */
-  --theme-sidebar-bg: #191B1F;
-  --theme-sidebar-surface: #272A2F;
-  --theme-sidebar-border: #3A3D42;
-  --theme-sidebar-text: #A5A7AA;
-  --theme-sidebar-text-active: #E6E6E4;
+  --theme-sidebar-bg: #F0F5FA;
+  --theme-sidebar-surface: #E2EBF3;
+  --theme-sidebar-border: #C8D9E6;
+  --theme-sidebar-text: #496B7B;
+  --theme-sidebar-text-active: #2F4156;
 
   /* ── Primary Accents ── */
-  --theme-brand-primary: #191B1F;
-  --theme-brand-hover: #272A2F;
-  --theme-brand-accent: #E6E6E4;
-  --theme-brand-glow: rgba(25, 27, 31, 0.35);
+  --theme-brand-primary: #2F4156;
+  --theme-brand-hover: #3D5269;
+  --theme-brand-accent: #567C8D;
+  --theme-brand-glow: rgba(47, 65, 86, 0.12);
 
   /* ── Borders ── */
-  --theme-border: #3A3D42;
-  --theme-border-active: #A5A7AA;
-  --theme-border-inner: #3A3D42;
+  --theme-border: #C8D9E6;
+  --theme-border-active: #567C8D;
+  --theme-border-inner: #D6E3ED;
 
   /* ── Typography ── */
-  --theme-text-primary: #E6E6E4;
-  --theme-text-secondary: #A5A7AA;
-  --theme-text-muted: #777A7F;
+  --theme-text-primary: #2F4156;
+  --theme-text-secondary: #4A6A7A;
+  --theme-text-muted: #637D8D;
 
   /* ── Status Colors ── */
-  --theme-status-green: #34d399;
-  --theme-status-green-bg: rgba(52, 211, 153, 0.14);
-  --theme-status-red: #ff7171;
-  --theme-status-red-bg: rgba(239, 68, 68, 0.16);
-  --theme-status-amber: #fbbf24;
-  --theme-status-amber-bg: rgba(251, 191, 36, 0.14);
+  --theme-status-green: #16a34a;
+  --theme-status-green-bg: rgba(22, 163, 74, 0.10);
+  --theme-status-red: #dc2626;
+  --theme-status-red-bg: rgba(220, 38, 38, 0.08);
+  --theme-status-amber: #d97706;
+  --theme-status-amber-bg: rgba(217, 119, 6, 0.10);
 }
 
 @theme {
@@ -145,8 +145,8 @@
   --color-status-amber-bg: var(--theme-status-amber-bg);
 
   /* ── Overrides for Pure Colors ── */
-  --color-white: #E6E6E4;
-  --color-black: #191B1F;
+  --color-white: #FFFFFF;
+  --color-black: #000000;
 
   /* ── Fonts ── */
   --font-sans: 'Figtree', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -215,7 +215,7 @@ body.sidebar-resizing {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-border);
+  background-color: var(--color-border-active);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {

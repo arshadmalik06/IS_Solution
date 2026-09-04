@@ -11,8 +11,6 @@ type SidebarProps = {
 
 const NAV_ITEMS = [
   { path: '/', icon: 'smart_toy', label: 'QuBIS Assistant', key: 'assistant' },
-  { path: '/standards', icon: 'verified', label: 'Standard Recommender', key: 'standards' },
-  { path: '/labs', icon: 'biotech', label: 'Lab & HUID Directory', key: 'labs' },
 ]
 
 export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage, onCloseMobile }: SidebarProps) {
@@ -42,8 +40,8 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             className="h-8 w-auto object-contain drop-shadow-sm brightness-105"
           />
           <div className="flex flex-col">
-            <span className="text-white font-bold text-[18px] leading-tight" style={{ letterSpacing: '-0.02em' }}>QuBIS</span>
-            <span className="text-[10px] text-white/70 tracking-wider font-medium">Bureau of Indian Standards</span>
+            <span className="text-sidebar-text-active font-bold text-[18px] leading-tight" style={{ letterSpacing: '-0.02em' }}>QuBIS</span>
+            <span className="text-[10px] text-sidebar-text tracking-wider font-medium">Bureau of Indian Standards</span>
           </div>
         </div>
       </div>

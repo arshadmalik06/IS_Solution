@@ -30,7 +30,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
   });
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   useEffect(() => {
     localStorage.setItem('qubis_settings', JSON.stringify(settings));
@@ -55,13 +55,12 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       root.classList.remove('reduce-motion');
     }
 
-    // Sync theme
-    if (settings.theme !== 'system' && settings.theme !== theme) {
-       if (settings.theme === 'light' && theme === 'dark') toggleTheme();
-       if (settings.theme === 'dark' && theme === 'light') toggleTheme();
+    // Sync theme — use setTheme directly
+    if (settings.theme !== theme) {
+      setTheme(settings.theme);
     }
     
-  }, [settings, theme, toggleTheme]);
+  }, [settings, theme, setTheme]);
 
   const updateSettings = (newSettings: Partial<QuBISSettings>) => {
     setSettings((prev) => ({

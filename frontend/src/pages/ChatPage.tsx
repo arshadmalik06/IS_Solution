@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import logo from '../assets/logo.png'
+import ChatBackground from '../components/chat/ChatBackground'
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs))
@@ -145,7 +146,8 @@ export default function ChatPage() {
         </header>
 
         {/* Chat Scroll Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+        <ChatBackground />
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar relative z-10">
           <div className="max-w-[800px] mx-auto w-full flex flex-col gap-8 pb-20">
             {messages.length === 0 ? (
               <EmptyState onQuickAction={(q) => handleSend(q)} />
