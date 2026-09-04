@@ -46,7 +46,7 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
         {/* Mobile Brand */}
         <div className="flex items-center gap-2 md:hidden">
           <img src="/qubis-logo.png" alt="QuBIS" className="h-7 w-auto object-contain" />
-          <span className="font-bold text-[15px] text-text-primary">QuBIS</span>
+          <span className="font-bold text-[16px] text-text-primary tracking-tight">QuBIS</span>
         </div>
 
         {chatTitle && (
@@ -60,7 +60,7 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
       <div className="flex flex-shrink-0 items-center gap-1 sm:gap-2">
         <button
           onClick={handleShare}
-          className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-card p-2 text-[14px] font-medium text-text-secondary shadow-sm transition-colors hover:bg-surface-elevated hover:text-text-primary sm:px-3 sm:py-1.5"
+          className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-card p-2 text-[14px] font-semibold text-text-secondary shadow-sm transition-colors hover:bg-surface-elevated hover:text-text-primary sm:px-3 sm:py-1.5"
           aria-label={shareStatus === 'copied' ? 'Link copied' : 'Copy page link'}
         >
           <span className="material-symbols-outlined text-[16px] text-text-muted">ios_share</span>
@@ -69,7 +69,7 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
 
         <button
           onClick={handleExport}
-          className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-card p-2 text-[14px] font-medium text-text-secondary shadow-sm transition-colors hover:bg-surface-elevated hover:text-text-primary sm:px-3 sm:py-1.5"
+          className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-card p-2 text-[14px] font-semibold text-text-secondary shadow-sm transition-colors hover:bg-surface-elevated hover:text-text-primary sm:px-3 sm:py-1.5"
           aria-label="Export chat report"
         >
           <span className="material-symbols-outlined text-[16px] text-text-muted">download</span>

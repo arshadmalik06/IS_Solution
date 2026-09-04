@@ -57,7 +57,7 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
                 <img src="/qubis-logo.png" alt="QuBIS" className="w-full h-full object-contain" />
               </div>
               <div>
-                <h3 className="text-[15px] font-bold text-text-primary leading-tight transition-colors">QuBIS Verified Assistant</h3>
+                <h3 className="text-[16px] font-bold text-text-primary leading-tight tracking-tight transition-colors">QuBIS Verified Assistant</h3>
                 <p className="text-[11px] text-text-muted transition-colors">Bureau of Indian Standards Statutory Intelligence</p>
               </div>
               <span className="text-[11px] px-2.5 py-0.5 rounded-full font-bold bg-status-success/15 text-status-success border border-status-success/25 flex items-center gap-1 ml-2 transition-colors">
@@ -78,13 +78,13 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
 
           {/* Action Buttons */}
           {!message.isStreaming && message.content && (
-            <div className="mt-4 flex flex-col gap-3 border-t border-border pt-3 transition-colors sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-5 flex flex-col gap-3 border-t border-border pt-4 transition-colors sm:flex-row sm:items-center sm:justify-between">
               <div className="flex min-w-0 items-start gap-3">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 bg-brand-primary text-white shadow-sm">
                   <span className="material-symbols-outlined text-[17px]">info</span>
                 </div>
-                <p className="text-[13px] leading-relaxed text-text-secondary transition-colors">
-                  <span className="font-bold text-text-primary">Note: </span>
+                <p className="text-[14px] leading-relaxed text-text-secondary transition-colors">
+                  <span className="font-semibold text-text-primary">Note: </span>
                   Always cross-verify statutory clauses with official BIS Gazette publications for commercial production.
                 </p>
               </div>

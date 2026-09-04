@@ -26,12 +26,12 @@ export default function LabsPage() {
       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 sm:py-8 md:px-10 lg:px-12">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="flex items-start gap-3 text-2xl font-bold leading-tight text-text-primary transition-colors sm:items-center sm:text-[28px]">
-              <span className="material-symbols-outlined flex-shrink-0 text-[28px] text-brand-accent sm:text-[32px]">biotech</span>
+          <div className="space-y-3">
+            <h1 className="flex items-start gap-3 type-h1 text-text-primary transition-colors sm:items-center">
+              <span className="material-symbols-outlined flex-shrink-0 text-[32px] text-brand-accent sm:text-[36px]">biotech</span>
               Lab & HUID Directory
             </h1>
-            <p className="text-[15px] text-text-muted max-w-xl transition-colors">
+            <p className="text-[16px] leading-relaxed text-text-muted max-w-xl transition-colors">
               Find BIS-recognized NABL accredited testing laboratories and verify HUID (Hallmark Unique Identification) numbers for gold jewellery.
             </p>
           </div>
@@ -44,11 +44,11 @@ export default function LabsPage() {
                   <span className="material-symbols-outlined text-[22px] text-brand-accent">science</span>
                 </div>
                 <div>
-                  <h3 className="text-[15px] font-bold text-text-primary transition-colors">Testing Laboratories</h3>
-                  <p className="text-[11px] text-text-muted transition-colors">NABL accredited labs for BIS certification</p>
+                  <h3 className="text-[16px] font-bold text-text-primary tracking-tight transition-colors">Testing Laboratories</h3>
+                  <p className="text-[12px] text-text-muted transition-colors">NABL accredited labs for BIS certification</p>
                 </div>
               </div>
-              <p className="text-[13px] text-text-secondary leading-relaxed transition-colors">
+              <p className="text-[14px] text-text-secondary leading-relaxed transition-colors">
                 Search for BIS-recognized laboratories based on product category, location, or testing capability.
               </p>
             </button>
@@ -59,11 +59,11 @@ export default function LabsPage() {
                   <span className="material-symbols-outlined text-[22px] text-brand-accent">workspace_premium</span>
                 </div>
                 <div>
-                  <h3 className="text-[15px] font-bold text-text-primary transition-colors">HUID Verification</h3>
-                  <p className="text-[11px] text-text-muted transition-colors">Hallmark Unique Identification lookup</p>
+                  <h3 className="text-[16px] font-bold text-text-primary tracking-tight transition-colors">HUID Verification</h3>
+                  <p className="text-[12px] text-text-muted transition-colors">Hallmark Unique Identification lookup</p>
                 </div>
               </div>
-              <p className="text-[13px] text-text-secondary leading-relaxed transition-colors">
+              <p className="text-[14px] text-text-secondary leading-relaxed transition-colors">
                 Verify the authenticity of hallmarked gold jewellery using the HUID number engraved on the item.
               </p>
             </button>
@@ -74,7 +74,7 @@ export default function LabsPage() {
             <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-border bg-surface-card px-4 py-3 transition-colors focus-within:border-brand-primary">
               <span className="material-symbols-outlined text-[20px] text-brand-accent">search</span>
               <input
-                className="min-w-0 flex-1 border-0 bg-transparent text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none"
+                className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-text-primary placeholder:text-text-muted focus:outline-none"
                 placeholder="Search labs by product, location, or capability..."
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
@@ -93,7 +93,7 @@ export default function LabsPage() {
             <button
               type="submit"
               disabled={!searchInput.trim() || isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 py-3 font-semibold text-white shadow-sm transition-all hover:bg-brand-hover disabled:opacity-50 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:bg-brand-hover disabled:opacity-50 sm:w-auto"
             >
               <span className="material-symbols-outlined text-[18px]">biotech</span>
               {isLoading ? 'Searching...' : 'Search Labs'}
@@ -110,8 +110,8 @@ export default function LabsPage() {
 
           {/* Results */}
           {results.length > 0 && (
-            <div className="space-y-4">
-              <h2 className="text-[16px] font-semibold text-text-primary transition-colors">
+            <div className="space-y-5">
+              <h2 className="text-[18px] font-semibold text-text-primary tracking-tight transition-colors">
                 Found {results.length} relevant result{results.length !== 1 ? 's' : ''}
               </h2>
               <div className="space-y-3">
@@ -122,16 +122,16 @@ export default function LabsPage() {
                   >
                     <div className="flex min-w-0 items-center gap-2">
                       <span className="material-symbols-outlined text-[18px] text-brand-accent transition-colors">science</span>
-                      <span className="min-w-0 break-words font-semibold text-[14px] text-text-primary transition-colors">
+                      <span className="min-w-0 break-words font-semibold text-[15px] text-text-primary type-bis-id transition-colors">
                         {String(result.metadata.standard_id || 'BIS Document')}
                       </span>
                       {result.metadata.clause_id ? (
-                        <span className="text-[12px] text-text-muted font-mono transition-colors">
+                        <span className="text-[12px] text-text-muted type-bis-id transition-colors">
                           Section {String(result.metadata.clause_id)}
                         </span>
                       ) : null}
                     </div>
-                    <p className="text-[13px] leading-relaxed text-text-secondary transition-colors">
+                    <p className="text-[14px] leading-relaxed text-text-secondary transition-colors">
                       {result.content}
                     </p>
                   </div>
@@ -144,7 +144,7 @@ export default function LabsPage() {
           {!isLoading && results.length === 0 && !error && (
             <div className="text-center py-12 space-y-4">
               <span className="material-symbols-outlined text-[48px] text-text-muted opacity-50 transition-colors">biotech</span>
-              <p className="text-text-muted text-[15px] transition-colors">Search for a testing laboratory or enter a HUID number.</p>
+              <p className="text-text-muted text-[16px] transition-colors">Search for a testing laboratory or enter a HUID number.</p>
             </div>
           )}
         </div>

@@ -52,7 +52,7 @@ export function SettingsPage() {
     return (
       <button 
         onClick={() => scrollTo(id)}
-        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-200 ${
+        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-[14px] font-medium transition-all duration-200 ${
           isActive 
             ? 'bg-surface-elevated text-brand-primary shadow-sm' 
             : 'text-text-secondary hover:bg-surface-elevated hover:text-text-primary'
@@ -99,7 +99,7 @@ export function SettingsPage() {
           >
             <span className="material-symbols-outlined text-[20px]">arrow_back</span>
           </button>
-          <h2 className="text-xl font-semibold flex items-center gap-2 text-white tracking-tight">
+          <h2 className="text-xl font-bold flex items-center gap-2 text-white" style={{ letterSpacing: '-0.02em' }}>
              Settings
           </h2>
         </div>
@@ -124,14 +124,14 @@ export function SettingsPage() {
           >
             <span className="material-symbols-outlined text-[20px]">arrow_back</span>
           </button>
-          <h1 className="text-xl font-bold">Settings</h1>
+          <h1 className="text-xl font-bold" style={{ letterSpacing: '-0.02em' }}>Settings</h1>
         </div>
 
         <div className="mx-auto max-w-4xl space-y-12 p-4 pb-24 sm:p-6 sm:pb-32 md:p-10">
           
           <div className="hidden md:block mb-8 animate-slide-down">
-            <h1 className="text-3xl font-bold mb-2 tracking-tight">Settings</h1>
-            <p className="text-text-secondary text-lg">Manage your QuBIS account and application preferences.</p>
+            <h1 className="type-h1 text-text-primary mb-3">Settings</h1>
+            <p className="text-text-secondary text-[18px] leading-relaxed">Manage your QuBIS account and application preferences.</p>
           </div>
 
           {/* General Section */}
@@ -140,14 +140,14 @@ export function SettingsPage() {
               <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
                 <span className="material-symbols-outlined text-[24px]">monitor</span>
               </div>
-              <h2 className="text-2xl font-semibold">General</h2>
+              <h2 className="type-h3 text-text-primary">General</h2>
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
               <div className="border-b border-border p-4 sm:p-6">
                 <div className="mb-6">
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Theme Preference</h3>
-                  <p className="text-sm text-text-secondary">Choose how QuBIS looks to you.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Theme Preference</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Choose how QuBIS looks to you.</p>
                 </div>
                 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -166,7 +166,7 @@ export function SettingsPage() {
                       }`}
                     >
                       <span className="material-symbols-outlined text-[32px] mb-3">{t.icon}</span>
-                      <span className="font-medium">{t.label}</span>
+                      <span className="text-[14px] font-medium">{t.label}</span>
                       {settings.theme === t.id && (
                         <span className="absolute top-3 right-3 flex h-3 w-3">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-40"></span>
@@ -186,18 +186,18 @@ export function SettingsPage() {
               <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
                 <span className="material-symbols-outlined text-[24px]">chat</span>
               </div>
-              <h2 className="text-2xl font-semibold">Chat Preferences</h2>
+              <h2 className="type-h3 text-text-primary">Chat Preferences</h2>
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col divide-y divide-border">
               <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Assistant Tone</h3>
-                  <p className="text-sm text-text-secondary">How the AI should respond to your queries.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Assistant Tone</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">How the AI should respond to your queries.</p>
                 </div>
                 <div className="relative">
                   <select 
-                    className="appearance-none bg-surface border border-border rounded-xl pl-4 pr-10 py-2.5 text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary/50 hover:border-brand-primary/50 transition-colors cursor-pointer shadow-sm"
+                    className="appearance-none bg-surface border border-border rounded-xl pl-4 pr-10 py-2.5 text-[14px] text-text-primary font-medium focus:outline-none focus:ring-2 focus:ring-brand-primary/50 hover:border-brand-primary/50 transition-colors cursor-pointer shadow-sm"
                     value={settings.chatPreferences.tone}
                     onChange={(e) => updateSettings({ chatPreferences: { ...settings.chatPreferences, tone: e.target.value as ToneType } })}
                   >
@@ -213,8 +213,8 @@ export function SettingsPage() {
 
               <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Show Sources by Default</h3>
-                  <p className="text-sm text-text-secondary">Automatically expand standard references in responses.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Show Sources by Default</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Automatically expand standard references in responses.</p>
                 </div>
                 <Toggle 
                   checked={settings.chatPreferences.showSources} 
@@ -225,8 +225,8 @@ export function SettingsPage() {
               
               <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Enter to Submit</h3>
-                  <p className="text-sm text-text-secondary">Press Enter to send message, Shift+Enter for new line.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Enter to Submit</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Press Enter to send message, Shift+Enter for new line.</p>
                 </div>
                 <Toggle 
                   checked={settings.chatPreferences.enterToSubmit} 
@@ -243,21 +243,21 @@ export function SettingsPage() {
               <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
                 <span className="material-symbols-outlined text-[24px]">accessibility_new</span>
               </div>
-              <h2 className="text-2xl font-semibold">Accessibility</h2>
+              <h2 className="type-h3 text-text-primary">Accessibility</h2>
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col divide-y divide-border">
                <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Font Size</h3>
-                  <p className="text-sm text-text-secondary">Adjust text size for better readability.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Font Size</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Adjust text size for better readability.</p>
                 </div>
                 <div className="flex max-w-full flex-wrap rounded-xl border border-border bg-surface-elevated p-1">
                   {(['small', 'medium', 'large'] as FontSize[]).map(size => (
                     <button
                       key={size}
                       onClick={() => updateSettings({ accessibility: { ...settings.accessibility, fontSize: size } })}
-                      className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 capitalize ${
+                      className={`px-4 py-1.5 rounded-lg text-[14px] font-medium transition-all duration-200 capitalize ${
                         settings.accessibility.fontSize === size
                           ? 'bg-brand-primary text-white shadow-sm'
                           : 'text-text-secondary hover:text-text-primary hover:bg-surface'
@@ -271,8 +271,8 @@ export function SettingsPage() {
 
               <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">High Contrast Mode</h3>
-                  <p className="text-sm text-text-secondary">Increase contrast for better visibility.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">High Contrast Mode</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Increase contrast for better visibility.</p>
                 </div>
                 <Toggle 
                   checked={settings.accessibility.highContrast} 
@@ -283,8 +283,8 @@ export function SettingsPage() {
 
               <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="text-base font-semibold text-text-primary mb-1">Reduce Motion</h3>
-                  <p className="text-sm text-text-secondary">Minimize animations and transitions.</p>
+                  <h3 className="text-[16px] font-semibold text-text-primary mb-1">Reduce Motion</h3>
+                  <p className="text-[14px] text-text-secondary leading-relaxed">Minimize animations and transitions.</p>
                 </div>
                 <Toggle 
                   checked={settings.accessibility.reduceMotion} 
@@ -301,7 +301,7 @@ export function SettingsPage() {
               <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
                 <span className="material-symbols-outlined text-[24px]">database</span>
               </div>
-              <h2 className="text-2xl font-semibold">Data & Privacy</h2>
+              <h2 className="type-h3 text-text-primary">Data & Privacy</h2>
             </div>
             
             <div className="space-y-4">
@@ -311,13 +311,13 @@ export function SettingsPage() {
                     <span className="material-symbols-outlined text-[20px]">download</span>
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-text-primary mb-1">Export Data</h3>
-                    <p className="text-sm text-text-secondary max-w-md">Download a complete copy of your chat history, sessions, and settings in JSON format.</p>
+                    <h3 className="text-[16px] font-semibold text-text-primary mb-1">Export Data</h3>
+                    <p className="text-[14px] text-text-secondary max-w-md leading-relaxed">Download a complete copy of your chat history, sessions, and settings in JSON format.</p>
                   </div>
                 </div>
                 <button 
                   onClick={exportData}
-                  className="px-5 py-2.5 bg-surface-elevated hover:bg-brand-primary hover:text-white text-text-primary rounded-xl font-medium transition-colors border border-border whitespace-nowrap active:scale-95"
+                  className="px-5 py-2.5 bg-surface-elevated hover:bg-brand-primary hover:text-white text-text-primary rounded-xl text-[14px] font-semibold transition-colors border border-border whitespace-nowrap active:scale-95"
                 >
                   Export JSON
                 </button>
@@ -329,8 +329,8 @@ export function SettingsPage() {
                     <span className="material-symbols-outlined text-[20px]">delete_forever</span>
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-status-red mb-1">Clear All History</h3>
-                    <p className="text-sm text-text-secondary max-w-md">Permanently delete all chat sessions and messages stored locally on this device.</p>
+                    <h3 className="text-[16px] font-semibold text-status-red mb-1">Clear All History</h3>
+                    <p className="text-[14px] text-text-secondary max-w-md leading-relaxed">Permanently delete all chat sessions and messages stored locally on this device.</p>
                   </div>
                 </div>
                 <button 
@@ -339,7 +339,7 @@ export function SettingsPage() {
                       clearHistory();
                     }
                   }}
-                  className="px-5 py-2.5 bg-status-red hover:bg-red-600 text-white rounded-xl font-medium transition-colors shadow-sm whitespace-nowrap active:scale-95"
+                  className="px-5 py-2.5 bg-status-red hover:bg-red-600 text-white rounded-xl text-[14px] font-semibold transition-colors shadow-sm whitespace-nowrap active:scale-95"
                 >
                   Delete History
                 </button>
@@ -356,15 +356,15 @@ export function SettingsPage() {
 
                <div className="relative z-10 flex flex-col items-center">
                  <img src="/qubis-logo.png" alt="QuBIS Logo" className="w-20 h-20 mb-6 drop-shadow-xl hover:scale-110 transition-transform duration-500" />
-                 <h3 className="text-2xl font-bold text-text-primary tracking-tight">QuBIS Intelligent Assistant</h3>
-                 <div className="inline-flex items-center gap-2 mt-2">
-                   <span className="px-2.5 py-0.5 rounded-full bg-surface-elevated border border-border text-xs font-semibold text-text-muted">Version 1.0.0</span>
-                   <span className="px-2.5 py-0.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-xs font-semibold text-brand-primary">Beta</span>
+                 <h3 className="type-h2 text-text-primary">QuBIS Intelligent Assistant</h3>
+                 <div className="inline-flex items-center gap-2 mt-3">
+                   <span className="px-2.5 py-0.5 rounded-full bg-surface-elevated border border-border text-[12px] font-semibold text-text-muted">Version 1.0.0</span>
+                   <span className="px-2.5 py-0.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[12px] font-semibold text-brand-primary">Beta</span>
                  </div>
-                 <p className="text-base text-text-secondary mt-6 max-w-md mx-auto leading-relaxed">
+                 <p className="text-[16px] text-text-secondary mt-6 max-w-md mx-auto leading-relaxed">
                    Empowering users with state-of-the-art AI-driven insights into Indian Standards and BIS Services.
                  </p>
-                 <div className="mt-8 flex items-center justify-center gap-6 text-sm font-medium">
+                 <div className="mt-8 flex items-center justify-center gap-6 text-[14px] font-medium">
                     <a href="#" className="text-text-secondary hover:text-brand-primary transition-colors underline-offset-4 hover:underline">Terms of Service</a>
                     <span className="w-1.5 h-1.5 rounded-full bg-border"></span>
                     <a href="#" className="text-text-secondary hover:text-brand-primary transition-colors underline-offset-4 hover:underline">Privacy Policy</a>
@@ -376,7 +376,7 @@ export function SettingsPage() {
           <div className="pt-12 flex justify-center pb-8 animate-fade-in" style={{animationDelay: '400ms'}}>
              <button 
                 onClick={resetSettings}
-                className="px-6 py-2.5 text-text-muted hover:text-text-primary hover:bg-surface-elevated rounded-xl transition-all duration-200 text-sm font-medium group flex items-center gap-2"
+                className="px-6 py-2.5 text-text-muted hover:text-text-primary hover:bg-surface-elevated rounded-xl transition-all duration-200 text-[14px] font-medium group flex items-center gap-2"
              >
                <span className="material-symbols-outlined text-[18px] group-hover:-rotate-180 transition-transform duration-500">restore</span>
                Reset all settings to default

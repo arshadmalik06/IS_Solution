@@ -120,35 +120,35 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
                 <button type="button" onClick={() => handleAttachmentClick('pdf')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
                   <span className="material-symbols-outlined text-[18px] text-brand-accent group-hover:text-brand-primary">picture_as_pdf</span>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-text-primary">Upload PDF Document</span>
+                    <span className="text-[14px] font-medium text-text-primary">Upload PDF Document</span>
                   </div>
                 </button>
                 
                 <button type="button" onClick={() => handleAttachmentClick('test-report')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
                   <span className="material-symbols-outlined text-[18px] text-brand-accent group-hover:text-brand-primary">science</span>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-text-primary">Upload Test Report</span>
+                    <span className="text-[14px] font-medium text-text-primary">Upload Test Report</span>
                   </div>
                 </button>
 
                 <button type="button" onClick={() => handleAttachmentClick('specs')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
                   <span className="material-symbols-outlined text-[18px] text-brand-accent group-hover:text-brand-primary">description</span>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-text-primary">Product Specifications</span>
+                    <span className="text-[14px] font-medium text-text-primary">Product Specifications</span>
                   </div>
                 </button>
 
                 <button type="button" onClick={() => handleAttachmentClick('certificate')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
                   <span className="material-symbols-outlined text-[18px] text-brand-accent group-hover:text-brand-primary">workspace_premium</span>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-text-primary">BIS Certificate / License</span>
+                    <span className="text-[14px] font-medium text-text-primary">BIS Certificate / License</span>
                   </div>
                 </button>
 
                 <button type="button" onClick={() => handleAttachmentClick('gazette')} className="flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors hover:bg-surface-hover group">
                   <span className="material-symbols-outlined text-[18px] text-brand-accent group-hover:text-brand-primary">gavel</span>
                   <div className="flex flex-col">
-                    <span className="text-[13px] font-medium text-text-primary">Gazette Notification</span>
+                    <span className="text-[14px] font-medium text-text-primary">Gazette Notification</span>
                   </div>
                 </button>
               </div>
@@ -158,7 +158,7 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
           <textarea
             ref={textareaRef}
             style={{ outline: 'none', boxShadow: 'none' }}
-            className="min-w-0 flex-1 resize-none border-0 bg-transparent py-1 text-[14px] text-text-primary placeholder:text-text-muted transition-all duration-200 focus:outline-none focus-visible:outline-none"
+            className="min-w-0 flex-1 resize-none border-0 bg-transparent py-1 text-[15px] text-text-primary placeholder:text-text-muted transition-all duration-200 focus:outline-none focus-visible:outline-none"
             placeholder={placeholderText}
             rows={1}
             value={input}

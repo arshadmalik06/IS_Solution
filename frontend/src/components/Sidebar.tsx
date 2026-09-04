@@ -42,7 +42,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             className="h-8 w-auto object-contain drop-shadow-sm brightness-105"
           />
           <div className="flex flex-col">
-            <span className="text-white font-bold text-[16px] leading-tight tracking-tight">QuBIS</span>
+            <span className="text-white font-bold text-[18px] leading-tight" style={{ letterSpacing: '-0.02em' }}>QuBIS</span>
             <span className="text-[10px] text-white/70 tracking-wider font-medium">Bureau of Indian Standards</span>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
         >
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px] text-white/80 group-hover:text-white transition-colors">edit_square</span>
-            <span className="text-[13px] font-semibold">New chat</span>
+            <span className="text-[14px] font-semibold">New chat</span>
           </div>
           <span className="material-symbols-outlined text-[16px] text-white/80 group-hover:translate-x-0.5 transition-transform">add</span>
         </button>
@@ -67,7 +67,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-sidebar-surface text-sidebar-text border border-sidebar-border focus-within:border-brand-primary transition-colors">
           <span className="material-symbols-outlined text-[16px] text-brand-accent">search</span>
           <input
-            className="w-full bg-transparent border-0 text-[13px] text-sidebar-text-active placeholder:text-sidebar-text focus:outline-none"
+            className="w-full bg-transparent border-0 text-[14px] text-sidebar-text-active placeholder:text-sidebar-text focus:outline-none"
             placeholder="Search standards & chats..."
             type="text"
             value={searchQuery}
@@ -80,13 +80,13 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
       <div className="flex-1 overflow-y-auto px-4 py-2 space-y-5">
         {/* BIS Services */}
         <div className="space-y-1.5">
-          <span className="px-2 text-[11px] uppercase tracking-wider text-sidebar-text font-bold">BIS Services</span>
+          <span className="px-2 text-[11px] uppercase tracking-wider text-sidebar-text font-semibold">BIS Services</span>
           <nav className="space-y-1">
             {NAV_ITEMS.map(item => (
               <button
                 key={item.key}
                 onClick={() => handleNav(item.path)}
-                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all text-left relative overflow-hidden ${
+                className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg transition-all text-left relative overflow-hidden ${
                   isActive(item.path)
                     ? 'bg-[#E9441F] text-white font-semibold shadow-sm'
                     : 'text-sidebar-text hover:bg-sidebar-surface hover:text-sidebar-text-active'
@@ -98,7 +98,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
                 <span className={`material-symbols-outlined text-[18px] ${isActive(item.path) ? '' : 'text-brand-accent'} ${isActive(item.path) ? 'ml-1' : ''}`}>
                   {item.icon}
                 </span>
-                <span className="text-[13px] truncate">{item.label}</span>
+                <span className="text-[14px] font-medium truncate">{item.label}</span>
               </button>
             ))}
           </nav>
@@ -106,13 +106,13 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
 
         {/* Recents */}
         <div className="space-y-1.5">
-          <span className="px-2 text-[11px] uppercase tracking-wider text-sidebar-text font-bold">Recents</span>
+          <span className="px-2 text-[11px] uppercase tracking-wider text-sidebar-text font-semibold">Recents</span>
           <nav className="space-y-0.5">
             {filteredSessions.slice(0, 6).map((session, i) => (
               <button
                 key={session.id}
                 onClick={() => handleNav('/')}
-                className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg transition-colors text-left ${
+                className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors text-left ${
                   i === 0
                     ? 'bg-sidebar-surface text-sidebar-text-active font-medium'
                     : 'text-sidebar-text hover:bg-sidebar-surface hover:text-sidebar-text-active'
@@ -136,7 +136,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             </div>
             <div className="flex flex-col truncate">
               <span className="text-[13px] text-sidebar-text-active font-semibold truncate">User</span>
-              <span className="text-[11px] text-brand-accent truncate font-semibold">MSME Licensee</span>
+              <span className="text-[11px] text-brand-accent truncate font-medium">MSME Licensee</span>
             </div>
           </div>
           <button 

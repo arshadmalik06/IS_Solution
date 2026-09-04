@@ -23,7 +23,7 @@ export default function SourcesBar({ sources }: SourcesBarProps) {
             <img src="/qubis-logo.png" alt="QuBIS" className="w-full h-full object-contain" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-[15px] text-text-primary font-bold tracking-tight transition-colors">QuBIS Intelligence</span>
+            <span className="text-[16px] text-text-primary font-bold tracking-tight transition-colors">QuBIS Intelligence</span>
             <span className="px-2.5 py-0.5 rounded-full bg-status-success/15 text-status-success text-[11px] flex items-center gap-1 font-bold border border-status-success/25 transition-colors">
               <span className="material-symbols-outlined text-[13px]">verified</span>verified
             </span>
@@ -38,7 +38,7 @@ export default function SourcesBar({ sources }: SourcesBarProps) {
             <span className="material-symbols-outlined text-[16px] text-brand-accent">manage_search</span>
             <span className="text-text-primary">Searched {sources.length} BIS documents</span>
             {sourceIds && (
-              <span className="font-mono text-[11px] text-text-muted font-normal ml-1 hidden md:inline transition-colors">{sourceIds}</span>
+              <span className="type-bis-id text-[11px] text-text-muted font-normal ml-1 hidden md:inline transition-colors">{sourceIds}</span>
             )}
             <span className={`material-symbols-outlined text-[16px] text-text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}>
               keyboard_arrow_down
@@ -49,14 +49,14 @@ export default function SourcesBar({ sources }: SourcesBarProps) {
 
       {/* Expanded Sources */}
       {isOpen && (
-        <div className="mt-3 pt-3 border-t border-border space-y-2 transition-colors">
+        <div className="mt-3 pt-3 border-t border-border space-y-2.5 transition-colors">
           {sources.map((source, i) => (
-            <div key={i} className="flex items-start gap-2 text-[12px]">
+            <div key={i} className="flex items-start gap-2 text-[13px]">
               <span className="material-symbols-outlined text-[15px] text-status-success mt-0.5">check_circle</span>
               <div>
-                <span className="text-text-primary font-semibold transition-colors">{source.metadata.standard_id}</span>
+                <span className="text-text-primary font-semibold type-bis-id transition-colors">{source.metadata.standard_id}</span>
                 <span className="text-text-muted transition-colors"> — Clause {source.metadata.clause_id}</span>
-                <p className="text-text-secondary mt-1 line-clamp-2 transition-colors">{source.content}</p>
+                <p className="text-text-secondary mt-1 leading-relaxed line-clamp-2 transition-colors">{source.content}</p>
               </div>
             </div>
           ))}

@@ -26,12 +26,12 @@ export default function StandardsPage() {
       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6 sm:py-8 md:px-10 lg:px-12">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="flex items-start gap-3 text-2xl font-bold leading-tight text-text-primary transition-colors sm:items-center sm:text-[28px]">
-              <span className="material-symbols-outlined flex-shrink-0 text-[28px] text-brand-accent sm:text-[32px]">verified</span>
+          <div className="space-y-3">
+            <h1 className="flex items-start gap-3 type-h1 text-text-primary transition-colors sm:items-center">
+              <span className="material-symbols-outlined flex-shrink-0 text-[32px] text-brand-accent sm:text-[36px]">verified</span>
               Standard Recommender
             </h1>
-            <p className="text-[15px] text-text-muted max-w-xl transition-colors">
+            <p className="text-[16px] leading-relaxed text-text-muted max-w-xl transition-colors">
               Search for applicable Indian Standards by product, category, or keywords. Find the right BIS standard for your manufacturing or compliance needs.
             </p>
           </div>
@@ -41,7 +41,7 @@ export default function StandardsPage() {
             <div className="flex min-w-0 flex-1 items-center gap-3 rounded-xl border border-border bg-surface-card px-4 py-3 transition-colors focus-within:border-brand-primary">
               <span className="material-symbols-outlined text-[20px] text-brand-accent">search</span>
               <input
-                className="min-w-0 flex-1 border-0 bg-transparent text-[15px] text-text-primary placeholder:text-text-muted focus:outline-none"
+                className="min-w-0 flex-1 border-0 bg-transparent text-[16px] text-text-primary placeholder:text-text-muted focus:outline-none"
                 placeholder="Search by product, standard number, or keyword..."
                 value={searchInput}
                 onChange={e => setSearchInput(e.target.value)}
@@ -60,7 +60,7 @@ export default function StandardsPage() {
             <button
               type="submit"
               disabled={!searchInput.trim() || isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 py-3 font-semibold text-white shadow-sm transition-all hover:bg-brand-hover disabled:opacity-50 sm:w-auto"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 py-3 text-[14px] font-semibold text-white shadow-sm transition-all hover:bg-brand-hover disabled:opacity-50 sm:w-auto"
             >
               <span className="material-symbols-outlined text-[18px]">manage_search</span>
               {isLoading ? 'Searching...' : 'Search Standards'}
@@ -77,12 +77,12 @@ export default function StandardsPage() {
 
           {/* Results */}
           {results.length > 0 && (
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                <h2 className="text-[16px] font-semibold text-text-primary transition-colors">
+                <h2 className="text-[18px] font-semibold text-text-primary tracking-tight transition-colors">
                   Found {results.length} relevant standard{results.length !== 1 ? 's' : ''}
                 </h2>
-                <span className="text-[12px] text-text-muted font-mono transition-colors">via BIS Vector Database</span>
+                <span className="type-bis-id text-[12px] text-text-muted transition-colors">via BIS Vector Database</span>
               </div>
 
               <div className="space-y-3">
@@ -94,11 +94,11 @@ export default function StandardsPage() {
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex min-w-0 items-center gap-2">
                         <span className="material-symbols-outlined text-[18px] text-brand-accent transition-colors">description</span>
-                        <span className="min-w-0 break-words font-semibold text-[14px] text-text-primary transition-colors">
+                        <span className="min-w-0 break-words font-semibold text-[15px] text-text-primary type-bis-id transition-colors">
                           {String(result.metadata.standard_id || 'BIS Standard')}
                         </span>
                         {result.metadata.clause_id ? (
-                          <span className="text-[12px] text-text-muted font-mono transition-colors">
+                          <span className="text-[12px] text-text-muted type-bis-id transition-colors">
                             Clause {String(result.metadata.clause_id)}
                           </span>
                         ) : null}
@@ -109,7 +109,7 @@ export default function StandardsPage() {
                       </span>
                     </div>
 
-                    <p className="text-[13px] leading-relaxed text-text-secondary line-clamp-4 transition-colors">
+                    <p className="text-[14px] leading-relaxed text-text-secondary line-clamp-4 transition-colors">
                       {result.content}
                     </p>
 
@@ -119,7 +119,7 @@ export default function StandardsPage() {
                         href="https://www.services.bis.gov.in"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-[12px] font-semibold text-brand-accent hover:text-brand-primary transition-colors"
+                        className="flex items-center gap-1 text-[13px] font-semibold text-brand-accent hover:text-brand-primary transition-colors"
                       >
                         Verify at BIS Manak
                         <span className="material-symbols-outlined text-[13px]">launch</span>
@@ -135,13 +135,13 @@ export default function StandardsPage() {
           {!isLoading && results.length === 0 && !error && (
             <div className="text-center py-16 space-y-4">
               <span className="material-symbols-outlined text-[48px] text-text-muted opacity-50 transition-colors">verified_user</span>
-              <p className="text-text-muted text-[15px] transition-colors">Search for an Indian Standard to see results here.</p>
+              <p className="text-text-muted text-[16px] transition-colors">Search for an Indian Standard to see results here.</p>
               <div className="flex flex-wrap justify-center gap-2 mt-4">
                 {['LED lamps', 'Cement', 'Plywood', 'Packaged water', 'Steel', 'Toys'].map(term => (
                   <button
                     key={term}
                     onClick={() => { setSearchInput(term); search(term) }}
-                    className="px-3 py-1.5 rounded-lg bg-surface-card border border-border text-[13px] text-text-secondary hover:text-text-primary hover:border-brand-accent/40 transition-all"
+                    className="px-3.5 py-2 rounded-lg bg-surface-card border border-border text-[14px] text-text-secondary hover:text-text-primary hover:border-brand-accent/40 transition-all"
                   >
                     {term}
                   </button>

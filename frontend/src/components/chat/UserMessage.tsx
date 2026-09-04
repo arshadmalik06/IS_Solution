@@ -20,12 +20,12 @@ export default function UserMessage({ message }: UserMessageProps) {
             <div className="w-5 h-5 rounded-full bg-brand-primary flex items-center justify-center">
               <span className="material-symbols-outlined text-[13px] text-white">person</span>
             </div>
-            <span className="text-[12px] font-semibold text-text-primary transition-colors">You</span>
+            <span className="text-[13px] font-medium text-text-primary transition-colors">You</span>
           </div>
         </div>
 
         {/* Content */}
-        <p className="text-[14px] font-normal leading-relaxed text-text-primary transition-colors">
+        <p className="text-[15px] font-normal leading-[1.6] text-text-primary transition-colors">
           {message.content}
         </p>
 
