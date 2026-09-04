@@ -1,8 +1,12 @@
 export type Source = {
-  content: string
+  content?: string
   metadata: {
-    standard_id: string
-    clause_id: string
+    standard_id?: string
+    clause_id?: string
+    filename?: string
+    page_number?: number
+    /** Distinctive phrase for the PDF viewer to locate + highlight. */
+    search?: string
     [key: string]: unknown
   }
 }

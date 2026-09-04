@@ -13,7 +13,11 @@ export default function AssistantPage() {
   const scrollRef = useRef<HTMLDivElement>(null)
   
   // This state tracks which PDF is currently open
-  const [activePdf, setActivePdf] = useState<{ filename: string; page: number } | null>(null)
+  const [activePdf, setActivePdf] = useState<{
+    filename: string
+    page: number
+    search?: string
+  } | null>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -39,10 +43,10 @@ export default function AssistantPage() {
                   msg.role === 'user' ? (
                     <UserMessage key={msg.id} message={msg} />
                   ) : (
-                    <AssistantMessage 
-                      key={msg.id} 
-                      message={msg} 
-                      onOpenPdf={(filename: string, page: number) => setActivePdf({ filename, page })} 
+                    <AssistantMessage
+                      key={msg.id}
+                      message={msg}
+                      onOpenPdf={(filename, page, search) => setActivePdf({ filename, page, search })}
                     />
                   )
                 )
@@ -55,10 +59,11 @@ export default function AssistantPage() {
 
         {/* Right Side: The PDF Viewer Component */}
         {activePdf && (
-          <SplitScreen 
-            filename={activePdf.filename} 
-            page={activePdf.page} 
-            onClose={() => setActivePdf(null)} 
+          <SplitScreen
+            filename={activePdf.filename}
+            page={activePdf.page}
+            search={activePdf.search}
+            onClose={() => setActivePdf(null)}
           />
         )}
         

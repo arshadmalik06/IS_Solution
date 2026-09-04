@@ -34,17 +34,27 @@ export async function streamChat(
 
       buffer += decoder.decode(value, { stream: true })
       
-      // 1. EXTRACT PDF METADATA
+      // 1. EXTRACT PDF METADATA (filename, page, and the clause anchor phrase)
       if (buffer.includes('"filename"')) {
         const fileMatch = buffer.match(/"filename"\s*:\s*"([^"]+)"/)
         const pageMatch = buffer.match(/"page_number"\s*:\s*(\d+)/)
-        
+
         if (fileMatch && pageMatch) {
-          callbacks.onSources([{ 
-            metadata: { 
-              filename: fileMatch[1], 
-              page_number: parseInt(pageMatch[1], 10) 
-            } 
+          const searchMatch = buffer.match(/"search"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+          const clauseMatch = buffer.match(/"clause_id"\s*:\s*"([^"]*)"/)
+          const stdMatch = buffer.match(/"standard_id"\s*:\s*"([^"]*)"/)
+          const unescape = (s: string) =>
+            s.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+             .replace(/\\(["\\/])/g, '$1')
+
+          callbacks.onSources([{
+            metadata: {
+              filename: fileMatch[1],
+              page_number: parseInt(pageMatch[1], 10),
+              search: searchMatch ? unescape(searchMatch[1]) : undefined,
+              clause_id: clauseMatch ? clauseMatch[1] : undefined,
+              standard_id: stdMatch ? stdMatch[1] : undefined,
+            },
           } as any])
           buffer = buffer.replace(/"filename"\s*:\s*"[^"]+"/, '')
         }

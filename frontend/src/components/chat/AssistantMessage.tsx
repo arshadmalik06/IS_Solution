@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Message } from '../../types'
@@ -7,12 +6,10 @@ import LoadingIndicator from './LoadingIndicator'
 
 type AssistantMessageProps = {
   message: Message
-  onOpenPdf?: (filename: string, page: number) => void
+  onOpenPdf?: (filename: string, page: number, search?: string) => void
 }
 
 export default function AssistantMessage({ message, onOpenPdf }: AssistantMessageProps) {
-  const [copied, setCopied] = useState(false)
-  const [isHelpful, setIsHelpful] = useState(false)
   const time = message.timestamp.toLocaleTimeString('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
@@ -22,20 +19,6 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(message.content)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1800)
-    } catch {}
-  }
-
-  const handleForward = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'QuBIS response', text: message.content })
-      } else {
-        await navigator.clipboard.writeText(message.content)
-        setCopied(true)
-        window.setTimeout(() => setCopied(false), 1800)
-      }
     } catch {}
   }
 
@@ -83,11 +66,12 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
           {!message.isStreaming && hasValidSource && onOpenPdf && (
             <div className="mt-5 pt-4 border-t border-border">
               <button
-                onClick={() => onOpenPdf(metadata.filename, metadata.page_number)}
+                onClick={() => onOpenPdf(metadata.filename, metadata.page_number, metadata.search)}
                 className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-medium px-4 py-2 rounded-lg shadow-sm transition-colors"
               >
                 <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
-                Verify in Original PDF: {metadata.filename} (Page {metadata.page_number})
+                Verify in Original PDF: {metadata.standard_id ? `${metadata.standard_id} · ` : ''}
+                {metadata.clause_id ? `Clause ${metadata.clause_id} · ` : ''}Page {metadata.page_number}
               </button>
             </div>
           )}
