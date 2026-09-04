@@ -6,7 +6,6 @@ const defaultSettings: QuBISSettings = {
   theme: 'system',
   chatPreferences: {
     tone: 'balanced',
-    model: 'gemini-pro',
     showSources: true,
     enterToSubmit: true,
   },

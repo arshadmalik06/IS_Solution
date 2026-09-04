@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import type { Message } from '../../types'
@@ -9,6 +10,8 @@ type AssistantMessageProps = {
 }
 
 export default function AssistantMessage({ message }: AssistantMessageProps) {
+  const [copied, setCopied] = useState(false)
+  const [isHelpful, setIsHelpful] = useState(false)
   const time = message.timestamp.toLocaleTimeString('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
@@ -18,7 +21,23 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(message.content)
-    } catch { /* ignore */ }
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1800)
+    } catch { /* Clipboard access is unavailable. */ }
+  }
+
+  const handleForward = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'QuBIS response', text: message.content })
+      } else {
+        await navigator.clipboard.writeText(message.content)
+        setCopied(true)
+        window.setTimeout(() => setCopied(false), 1800)
+      }
+    } catch {
+      // The user dismissed the native share dialog or sharing is unavailable.
+    }
   }
 
   return (
@@ -59,8 +78,8 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
 
           {/* Action Buttons */}
           {!message.isStreaming && message.content && (
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-border transition-colors">
-              <div className="flex items-start gap-3">
+            <div className="mt-4 flex flex-col gap-3 border-t border-border pt-3 transition-colors sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-start gap-3">
                 <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 bg-brand-primary text-white shadow-sm">
                   <span className="material-symbols-outlined text-[17px]">info</span>
                 </div>
@@ -71,21 +90,30 @@ export default function AssistantMessage({ message }: AssistantMessageProps) {
               </div>
               <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
                 <button
+                  type="button"
                   onClick={handleCopy}
-                  className="p-1.5 rounded-lg hover:bg-surface-elevated hover:text-text-primary transition-colors border border-transparent hover:border-border"
-                  title="Copy"
+                  className="rounded-lg border border-transparent p-1.5 transition-colors hover:border-border hover:bg-surface-elevated hover:text-text-primary"
+                  title={copied ? 'Copied' : 'Copy'}
+                  aria-label={copied ? 'Response copied' : 'Copy response'}
                 >
                   <span className="material-symbols-outlined text-[17px]">content_copy</span>
                 </button>
                 <button
-                  className="p-1.5 rounded-lg hover:bg-surface-elevated hover:text-text-primary transition-colors border border-transparent hover:border-border"
-                  title="Helpful"
+                  type="button"
+                  onClick={() => setIsHelpful(!isHelpful)}
+                  aria-pressed={isHelpful}
+                  className={`rounded-lg border p-1.5 transition-colors ${isHelpful ? 'border-brand-primary/40 bg-brand-primary/10 text-brand-primary' : 'border-transparent hover:border-border hover:bg-surface-elevated hover:text-text-primary'}`}
+                  title={isHelpful ? 'Marked helpful' : 'Mark as helpful'}
+                  aria-label={isHelpful ? 'Marked as helpful' : 'Mark response as helpful'}
                 >
                   <span className="material-symbols-outlined text-[17px]">thumb_up</span>
                 </button>
                 <button
-                  className="p-1.5 rounded-lg hover:bg-surface-elevated hover:text-text-primary transition-colors border border-transparent hover:border-border"
-                  title="Forward"
+                  type="button"
+                  onClick={handleForward}
+                  className="rounded-lg border border-transparent p-1.5 transition-colors hover:border-border hover:bg-surface-elevated hover:text-text-primary"
+                  title="Share response"
+                  aria-label="Share response"
                 >
                   <span className="material-symbols-outlined text-[17px]">forward</span>
                 </button>

@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { useTheme } from '../hooks/useTheme'
-import { useSettings } from '../hooks/useSettings'
 import type { ChatSession } from '../types'
 
 type SidebarProps = {
@@ -20,15 +18,7 @@ const NAV_ITEMS = [
 export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage, onCloseMobile }: SidebarProps) {
   const navigate = useNavigate()
   const location = useLocation()
-  const { theme, setTheme } = useTheme()
-  const { updateSettings } = useSettings()
   const [searchQuery, setSearchQuery] = useState('')
-
-  const handleToggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark'
-    setTheme(newTheme)
-    updateSettings({ theme: newTheme })
-  }
 
   const filteredSessions = sessions.filter(s =>
     s.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -44,7 +34,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
   return (
     <div className="flex flex-col h-full overflow-hidden text-sidebar-text bg-sidebar">
       {/* Logo Header */}
-      <div className="p-4 flex items-center justify-between gap-2 border-b border-sidebar-border">
+      <div className="p-4 flex items-center border-b border-sidebar-border">
         <div className="flex items-center gap-2.5">
           <img
             src="/qubis-logo.png"
@@ -56,13 +46,6 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             <span className="text-[10px] text-white/70 tracking-wider font-medium">Bureau of Indian Standards</span>
           </div>
         </div>
-        <button
-          onClick={() => { onNewChat(); handleNav('/') }}
-          className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#E9441F] text-white hover:bg-[#CC3A1A] transition-all shadow-sm"
-          title="New Chat"
-        >
-          <span className="material-symbols-outlined text-[18px]">add</span>
-        </button>
       </div>
 
       {/* New Chat Button */}
@@ -145,26 +128,6 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
 
       {/* Footer */}
       <div className="p-4 border-t border-sidebar-border space-y-2">
-        {/* Theme */}
-        <div className="flex items-center justify-between pb-2 mb-1 border-b border-sidebar-border">
-          <span className="text-[11px] font-medium text-sidebar-text flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[15px] text-brand-accent">tune</span>
-            Theme
-          </span>
-          <button
-            onClick={handleToggleTheme}
-            className="group flex items-center gap-1.5 h-7 px-2.5 rounded-full bg-sidebar-surface hover:bg-sidebar-border border border-sidebar-border transition-all shadow-sm text-sidebar-text-active"
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            <span className="material-symbols-outlined text-[15px] text-brand-accent">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-            </span>
-            <span className="text-[11px] font-semibold ml-0.5 whitespace-nowrap">
-              {theme === 'dark' ? 'Light mode' : 'Dark mode'}
-            </span>
-          </button>
-        </div>
-
         {/* User Profile */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -172,7 +135,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
               <span className="material-symbols-outlined text-[18px]">person</span>
             </div>
             <div className="flex flex-col truncate">
-              <span className="text-[13px] text-sidebar-text-active font-semibold truncate">Vikram Sharma</span>
+              <span className="text-[13px] text-sidebar-text-active font-semibold truncate">User</span>
               <span className="text-[11px] text-brand-accent truncate font-semibold">MSME Licensee</span>
             </div>
           </div>

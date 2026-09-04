@@ -27,8 +27,8 @@ export default function AssistantPage() {
     >
       <div className="flex flex-col h-full relative">
         {/* Chat Messages Area */}
-        <div className="flex-1 overflow-y-auto pb-40 px-6 md:px-10 lg:px-12">
-          <div className="w-full mx-auto pt-6 md:pt-8 space-y-5 max-w-4xl">
+        <div className="flex-1 overflow-y-auto px-4 pb-36 sm:px-6 sm:pb-40 md:px-10 lg:px-12">
+          <div className={`mx-auto w-full max-w-4xl ${messages.length === 0 ? 'min-h-full' : 'space-y-5 pt-6 md:pt-8'}`}>
             {messages.length === 0 ? (
               <EmptyState />
             ) : (

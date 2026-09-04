@@ -1,6 +1,6 @@
 export default function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center pt-16 md:pt-24 gap-6 text-center px-4 w-full">
+    <div className="flex min-h-full w-full flex-col items-center justify-center gap-5 px-4 pb-36 pt-10 text-center sm:gap-6 sm:pb-40 md:pt-14">
       {/* Logo */}
       <div className="w-28 h-20 flex items-center justify-center">
         <img
@@ -11,8 +11,8 @@ export default function EmptyState() {
       </div>
 
       <div className="space-y-2">
-        <h2 className="text-[28px] font-bold text-text-primary transition-colors">QuBIS Intelligence Assistant</h2>
-        <p className="text-[15px] text-text-muted max-w-[460px] transition-colors">
+        <h2 className="text-2xl font-bold leading-tight text-text-primary transition-colors sm:text-[28px]">QuBIS Intelligence Assistant</h2>
+        <p className="mx-auto max-w-[460px] text-sm text-text-muted transition-colors sm:text-[15px]">
           Ask anything about Indian Standards, BIS certification schemes, hallmarking, HUID verification, or testing laboratories.
         </p>
       </div>

@@ -32,12 +32,10 @@ export type SearchResult = {
 // Settings Types
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ToneType = 'balanced' | 'professional' | 'concise';
-export type ModelType = 'gemini-pro' | 'gemini-flash' | 'llama-3';
 export type FontSize = 'small' | 'medium' | 'large';
 
 export interface ChatPreferences {
   tone: ToneType;
-  model: ModelType;
   showSources: boolean;
   enterToSubmit: boolean;
 }

@@ -137,6 +137,41 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.layout-shell {
+  --sidebar-visible-width: var(--sidebar-size);
+}
+
+.layout-shell[data-sidebar-collapsed="true"] {
+  --sidebar-visible-width: 0px;
+}
+
+.layout-sidebar {
+  width: var(--sidebar-size);
+}
+
+@media (min-width: 768px) {
+  .layout-sidebar {
+    width: var(--sidebar-visible-width);
+  }
+
+  .app-header,
+  .chat-input-wrapper {
+    left: var(--sidebar-visible-width);
+    transition: left 200ms ease;
+  }
+}
+
+body.sidebar-resizing {
+  cursor: col-resize;
+  user-select: none;
+}
+
+/* Use Google's rounded Material Symbols across the product for a softer, current icon style. */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Rounded';
+  font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
   width: 6px;

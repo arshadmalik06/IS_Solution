@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import { useSettings } from '../hooks/useSettings'
 import { useChat } from '../hooks/useChat'
-import type { ThemeMode, ToneType, ModelType, FontSize } from '../types'
+import type { ThemeMode, ToneType, FontSize } from '../types'
 
 export function SettingsPage() {
   const navigate = useNavigate();
@@ -66,11 +66,12 @@ export function SettingsPage() {
     );
   };
 
-  const Toggle = ({ checked, onChange }: { checked: boolean, onChange: (checked: boolean) => void }) => (
+  const Toggle = ({ checked, onChange, label }: { checked: boolean, onChange: (checked: boolean) => void, label: string }) => (
     <button
       type="button"
       role="switch"
       aria-checked={checked}
+      aria-label={label}
       onClick={() => onChange(!checked)}
       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
         checked ? 'bg-brand-primary' : 'bg-surface-elevated border-border'
@@ -126,7 +127,7 @@ export function SettingsPage() {
           <h1 className="text-xl font-bold">Settings</h1>
         </div>
 
-        <div className="max-w-4xl mx-auto p-6 md:p-10 space-y-12 pb-32">
+        <div className="mx-auto max-w-4xl space-y-12 p-4 pb-24 sm:p-6 sm:pb-32 md:p-10">
           
           <div className="hidden md:block mb-8 animate-slide-down">
             <h1 className="text-3xl font-bold mb-2 tracking-tight">Settings</h1>
@@ -143,13 +144,13 @@ export function SettingsPage() {
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
-              <div className="p-6 border-b border-border">
+              <div className="border-b border-border p-4 sm:p-6">
                 <div className="mb-6">
                   <h3 className="text-base font-semibold text-text-primary mb-1">Theme Preference</h3>
                   <p className="text-sm text-text-secondary">Choose how QuBIS looks to you.</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {[
                     { id: 'light', icon: 'light_mode', label: 'Light' },
                     { id: 'dark', icon: 'dark_mode', label: 'Dark' },
@@ -189,43 +190,6 @@ export function SettingsPage() {
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col divide-y divide-border">
-              
-              <div className="p-6">
-                <div className="mb-6">
-                  <h3 className="text-base font-semibold text-text-primary mb-1">AI Model</h3>
-                  <p className="text-sm text-text-secondary">Select the underlying model for intelligence.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                   {[
-                    { id: 'gemini-pro', name: 'Gemini Pro', desc: 'Most capable, best for complex reasoning', badge: 'Recommended' },
-                    { id: 'gemini-flash', name: 'Gemini Flash', desc: 'Fastest responses for quick interactions', badge: 'Fast' },
-                    { id: 'llama-3', name: 'Llama 3', desc: 'Open-source local model variant', badge: null }
-                  ].map((m) => (
-                    <button
-                      key={m.id}
-                      onClick={() => updateSettings({ chatPreferences: { ...settings.chatPreferences, model: m.id as ModelType } })}
-                      className={`text-left p-4 rounded-xl border-2 transition-all duration-200 hover:-translate-y-0.5 ${
-                        settings.chatPreferences.model === m.id 
-                          ? 'border-brand-primary bg-brand-primary/5 shadow-sm' 
-                          : 'border-border bg-surface-elevated hover:border-brand-primary/50'
-                      }`}
-                    >
-                      <div className="flex justify-between items-start mb-1">
-                        <span className={`font-semibold ${settings.chatPreferences.model === m.id ? 'text-brand-primary' : 'text-text-primary'}`}>{m.name}</span>
-                        {m.badge && (
-                          <span className={`text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full ${
-                            m.badge === 'Recommended' ? 'bg-brand-primary text-white' : 'bg-surface text-text-muted border border-border'
-                          }`}>
-                            {m.badge}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-text-secondary">{m.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">Assistant Tone</h3>
@@ -247,7 +211,7 @@ export function SettingsPage() {
                 </div>
               </div>
 
-              <div className="p-6 flex items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
+              <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">Show Sources by Default</h3>
                   <p className="text-sm text-text-secondary">Automatically expand standard references in responses.</p>
@@ -255,10 +219,11 @@ export function SettingsPage() {
                 <Toggle 
                   checked={settings.chatPreferences.showSources} 
                   onChange={(checked) => updateSettings({ chatPreferences: { ...settings.chatPreferences, showSources: checked } })} 
+                  label="Show sources by default"
                 />
               </div>
               
-              <div className="p-6 flex items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
+              <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">Enter to Submit</h3>
                   <p className="text-sm text-text-secondary">Press Enter to send message, Shift+Enter for new line.</p>
@@ -266,6 +231,7 @@ export function SettingsPage() {
                 <Toggle 
                   checked={settings.chatPreferences.enterToSubmit} 
                   onChange={(checked) => updateSettings({ chatPreferences: { ...settings.chatPreferences, enterToSubmit: checked } })} 
+                  label="Enter to submit messages"
                 />
               </div>
             </div>
@@ -281,12 +247,12 @@ export function SettingsPage() {
             </div>
             
             <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden flex flex-col divide-y divide-border">
-               <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
+               <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">Font Size</h3>
                   <p className="text-sm text-text-secondary">Adjust text size for better readability.</p>
                 </div>
-                <div className="flex bg-surface-elevated p-1 rounded-xl border border-border">
+                <div className="flex max-w-full flex-wrap rounded-xl border border-border bg-surface-elevated p-1">
                   {(['small', 'medium', 'large'] as FontSize[]).map(size => (
                     <button
                       key={size}
@@ -303,7 +269,7 @@ export function SettingsPage() {
                 </div>
               </div>
 
-              <div className="p-6 flex items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
+              <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">High Contrast Mode</h3>
                   <p className="text-sm text-text-secondary">Increase contrast for better visibility.</p>
@@ -311,10 +277,11 @@ export function SettingsPage() {
                 <Toggle 
                   checked={settings.accessibility.highContrast} 
                   onChange={(checked) => updateSettings({ accessibility: { ...settings.accessibility, highContrast: checked } })} 
+                  label="High contrast mode"
                 />
               </div>
 
-              <div className="p-6 flex items-center justify-between gap-4 hover:bg-surface-elevated/30 transition-colors">
+              <div className="flex flex-col gap-4 p-4 transition-colors hover:bg-surface-elevated/30 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
                   <h3 className="text-base font-semibold text-text-primary mb-1">Reduce Motion</h3>
                   <p className="text-sm text-text-secondary">Minimize animations and transitions.</p>
@@ -322,6 +289,7 @@ export function SettingsPage() {
                 <Toggle 
                   checked={settings.accessibility.reduceMotion} 
                   onChange={(checked) => updateSettings({ accessibility: { ...settings.accessibility, reduceMotion: checked } })} 
+                  label="Reduce motion"
                 />
               </div>
             </div>
@@ -381,7 +349,7 @@ export function SettingsPage() {
 
           {/* About Section */}
           <section id="about" className="scroll-mt-10 pt-8 animate-fade-in-up" style={{animationDelay: '300ms'}}>
-            <div className="relative overflow-hidden flex flex-col items-center justify-center p-12 text-center bg-surface rounded-3xl border border-border shadow-sm">
+            <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-surface p-6 text-center shadow-sm sm:p-12">
                
                {/* Background Glow */}
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-brand-primary/20 blur-[100px] rounded-full pointer-events-none"></div>
