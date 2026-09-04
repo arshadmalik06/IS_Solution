@@ -11,20 +11,20 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
-    // Check local storage first (from old implementation or settings)
+    const saved = localStorage.getItem('bis-theme')
+    if (saved === 'light' || saved === 'dark') {
+      return saved as ThemeMode
+    }
+    // Check settings storage as fallback
     const settingsSaved = localStorage.getItem('qubis_settings')
     if (settingsSaved) {
       try {
         const parsed = JSON.parse(settingsSaved)
-        if (parsed.theme) return parsed.theme
+        if (parsed.theme === 'light' || parsed.theme === 'dark') return parsed.theme
       } catch (e) {}
     }
-    const saved = localStorage.getItem('bis-theme')
-    if (saved === 'light' || saved === 'dark' || saved === 'system') {
-      return saved as ThemeMode
-    }
-    // Default to system
-    return 'system'
+    // Default to dark
+    return 'dark'
   })
 
   useEffect(() => {
@@ -53,7 +53,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [theme])
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'dark' ? 'light' : 'dark')
+    setThemeState(prev => {
+      if (prev === 'system') {
+        // Resolve system to its effective value, then flip
+        const effective = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        return effective === 'dark' ? 'light' : 'dark'
+      }
+      return prev === 'dark' ? 'light' : 'dark'
+    })
   }
 
   const setTheme = (newTheme: ThemeMode) => {

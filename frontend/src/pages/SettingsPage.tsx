@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../hooks/useSettings'
 import { useChat } from '../hooks/useChat'
+import { useTheme } from '../hooks/useTheme'
 import type { ToneType, FontSize } from '../types'
 
 export function SettingsPage() {
@@ -13,7 +14,7 @@ export function SettingsPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['chat', 'accessibility', 'data', 'about'];
+      const sections = ['appearance', 'chat', 'accessibility', 'data', 'about'];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -87,17 +88,18 @@ export function SettingsPage() {
         <div className="p-6 border-b border-sidebar-border flex items-center gap-4">
           <button 
             onClick={() => navigate(-1)} 
-            className="p-1.5 rounded-lg bg-sidebar-surface text-sidebar-text hover:text-white transition-all duration-200 hover:scale-105 active:scale-95"
+            className="p-1.5 rounded-lg bg-sidebar-surface text-sidebar-text hover:text-sidebar-text-active transition-all duration-200 hover:scale-105 active:scale-95"
             aria-label="Go back"
           >
             <span className="material-symbols-outlined text-[20px]">arrow_back</span>
           </button>
-          <h2 className="text-xl font-bold flex items-center gap-2 text-white" style={{ letterSpacing: '-0.02em' }}>
+          <h2 className="text-xl font-bold flex items-center gap-2 text-sidebar-text-active" style={{ letterSpacing: '-0.02em' }}>
              Settings
           </h2>
         </div>
         <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
           <nav className="space-y-1.5">
+            <NavItem id="appearance" icon="palette" label="Appearance" />
             <NavItem id="chat" icon="chat" label="Chat Preferences" />
             <NavItem id="accessibility" icon="accessibility_new" label="Accessibility" />
             <NavItem id="data" icon="database" label="Data & Privacy" />
@@ -125,6 +127,9 @@ export function SettingsPage() {
             <h1 className="type-h1 text-text-primary mb-3">Settings</h1>
             <p className="text-text-secondary text-[18px] leading-relaxed">Manage your QuBIS account and application preferences.</p>
           </div>
+
+          {/* Appearance Section */}
+          <AppearanceSection />
 
           {/* Chat Preferences Section */}
           <section id="chat" className="scroll-mt-10 animate-fade-in-up" style={{animationDelay: '150ms'}}>
@@ -333,4 +338,73 @@ export function SettingsPage() {
       </div>
     </div>
   )
+}
+
+function AppearanceSection() {
+  const { theme, setTheme } = useTheme();
+  const { updateSettings } = useSettings();
+
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+    setTheme(newTheme);
+    updateSettings({ theme: newTheme });
+  };
+
+  // Resolve effective theme for UI display
+  const effectiveTheme = theme === 'system'
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    : theme;
+
+  return (
+    <section id="appearance" className="scroll-mt-10 animate-fade-in-up" style={{animationDelay: '100ms'}}>
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+          <span className="material-symbols-outlined text-[24px]">palette</span>
+        </div>
+        <h2 className="type-h3 text-text-primary">Appearance</h2>
+      </div>
+      
+      <div className="bg-surface rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="p-6">
+          <h3 className="text-[16px] font-semibold text-text-primary mb-1">Theme</h3>
+          <p className="text-[14px] text-text-secondary leading-relaxed mb-5">Choose between light and dark mode for the interface.</p>
+          
+          <div className="flex gap-4">
+            {/* Light Mode Card */}
+            <button
+              onClick={() => handleThemeChange('light')}
+              className={`flex-1 flex flex-col items-center gap-3 rounded-xl border-2 p-5 transition-all duration-200 ${
+                effectiveTheme === 'light'
+                  ? 'border-brand-primary bg-brand-primary/5 shadow-sm'
+                  : 'border-border hover:border-brand-accent hover:bg-surface-elevated/50'
+              }`}
+            >
+              <span className={`material-symbols-outlined text-[28px] ${
+                effectiveTheme === 'light' ? 'text-brand-primary' : 'text-text-muted'
+              }`}>light_mode</span>
+              <span className={`text-[14px] font-semibold ${
+                effectiveTheme === 'light' ? 'text-brand-primary' : 'text-text-secondary'
+              }`}>Light</span>
+            </button>
+
+            {/* Dark Mode Card */}
+            <button
+              onClick={() => handleThemeChange('dark')}
+              className={`flex-1 flex flex-col items-center gap-3 rounded-xl border-2 p-5 transition-all duration-200 ${
+                effectiveTheme === 'dark'
+                  ? 'border-brand-primary bg-brand-primary/5 shadow-sm'
+                  : 'border-border hover:border-brand-accent hover:bg-surface-elevated/50'
+              }`}
+            >
+              <span className={`material-symbols-outlined text-[28px] ${
+                effectiveTheme === 'dark' ? 'text-brand-primary' : 'text-text-muted'
+              }`}>dark_mode</span>
+              <span className={`text-[14px] font-semibold ${
+                effectiveTheme === 'dark' ? 'text-brand-primary' : 'text-text-secondary'
+              }`}>Dark</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
