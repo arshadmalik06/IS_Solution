@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useSettings } from '../hooks/useSettings'
+import VoiceAssistantWidget from './voice/VoiceAssistantWidget'
 
 type ChatInputProps = {
   onSend: (text: string) => void
@@ -10,7 +11,6 @@ type ChatInputProps = {
 export default function ChatInput({ onSend, isLoading, isInitialState = false }: ChatInputProps) {
   const [input, setInput] = useState('')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [isListening, setIsListening] = useState(false)
   const [isAttachmentOpen, setIsAttachmentOpen] = useState(false)
   const { settings } = useSettings()
 
@@ -35,32 +35,6 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
         e.preventDefault()
         handleSend()
       }
-    }
-  }
-
-  const handleVoiceInput = () => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      return
-    }
-
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    const recognition = new SpeechRecognition()
-    recognition.lang = 'en-IN'
-    recognition.interimResults = false
-    recognition.maxAlternatives = 1
-
-    recognition.onstart = () => setIsListening(true)
-    recognition.onend = () => setIsListening(false)
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript
-      setInput(prev => prev + transcript)
-    }
-    recognition.onerror = () => setIsListening(false)
-
-    if (isListening) {
-      recognition.stop()
-    } else {
-      recognition.start()
     }
   }
 
@@ -120,18 +94,10 @@ export default function ChatInput({ onSend, isLoading, isInitialState = false }:
           />
 
           <div className="flex items-center gap-1.5 flex-shrink-0 pr-1">
-            <button
-              type="button"
-              onClick={handleVoiceInput}
-              className={`p-2 rounded-xl transition-colors ${isListening
-                  ? 'text-red-400 bg-red-400/10'
-                  : 'text-text-muted hover:text-text-primary hover:bg-surface-hover'
-                }`}
-              title="Voice Input (English / Hindi / Regional)"
-              aria-label="Start voice input"
-            >
-              <span className="material-symbols-outlined text-[20px]">{isListening ? 'mic' : 'mic'}</span>
-            </button>
+            <VoiceAssistantWidget
+              onTranscribed={text => setInput(prev => (prev ? prev + ' ' + text : text))}
+              disabled={isLoading}
+            />
 
             <button
               type="button"
