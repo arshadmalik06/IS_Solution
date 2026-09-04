@@ -12,6 +12,12 @@ import 'pdfjs-dist/web/pdf_viewer.css'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = workerUrl
 
+export type FindStatus =
+  | { kind: 'searching' }
+  | { kind: 'matched'; exact: boolean } // exact = full phrase matched, no fallback needed
+  | { kind: 'not-found' } // phrase not found anywhere in the document — page-only
+  | { kind: 'no-phrase' } // nothing to search for, page navigation only
+
 type PdfViewerProps = {
   /** Absolute URL of the PDF to render. */
   url: string
@@ -19,6 +25,8 @@ type PdfViewerProps = {
   page: number
   /** Distinctive clause phrase to find + highlight on that page. */
   search?: string
+  /** Reports the real outcome of each find attempt, so the UI can show it honestly. */
+  onStatusChange?: (status: FindStatus) => void
 }
 
 const FIND_BASE = {
@@ -53,14 +61,17 @@ function phraseLadder(phrase: string): string[] {
  * page, then runs the find-controller for the clause phrase so the specific
  * line / table the assistant cited is scrolled into view and highlighted.
  * If the full phrase can't be matched (whitespace/hyphenation drift vs the raw
- * PDF text), it retries with shorter prefixes, and finally just holds the page.
+ * PDF text), it retries with shorter prefixes; if nothing matches anywhere it
+ * holds the page and reports 'not-found' — never silently guesses.
  */
-export default function PdfViewer({ url, page, search }: PdfViewerProps) {
+export default function PdfViewer({ url, page, search, onStatusChange }: PdfViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const viewerRef = useRef<InstanceType<typeof PDFViewer> | null>(null)
   const eventBusRef = useRef<InstanceType<typeof EventBus> | null>(null)
   const targetRef = useRef({ page, search })
   targetRef.current = { page, search }
+  const statusCbRef = useRef(onStatusChange)
+  statusCbRef.current = onStatusChange
 
   useEffect(() => {
     const container = containerRef.current
@@ -84,6 +95,8 @@ export default function PdfViewer({ url, page, search }: PdfViewerProps) {
     viewerRef.current = pdfViewer
     eventBusRef.current = eventBus
 
+    const report = (s: FindStatus) => statusCbRef.current?.(s)
+
     const jumpToPage = () => {
       const { page: p } = targetRef.current
       if (p && p > 0) {
@@ -98,24 +111,33 @@ export default function PdfViewer({ url, page, search }: PdfViewerProps) {
       const { search: q } = targetRef.current
       ladder = q ? phraseLadder(q) : []
       ladderIdx = 0
-      if (ladder.length === 0) return
+      if (ladder.length === 0) {
+        report({ kind: 'no-phrase' })
+        return
+      }
+      report({ kind: 'searching' })
       window.setTimeout(() => {
         if (!destroyed) dispatchFind(ladder[0])
       }, 350)
     }
 
-    // Retry with a shorter phrase when a match isn't found; otherwise hold page.
+    // Retry with a shorter phrase when a match isn't found; report the real outcome.
     const onFindState = (evt: { state: number; matchesCount?: { total: number } }) => {
-      if (destroyed) return
-      const notFound =
-        evt.state === FindState.NOT_FOUND ||
-        (evt.state === FindState.FOUND && evt.matchesCount?.total === 0)
+      if (destroyed || ladder.length === 0) return
+      const found =
+        evt.state === FindState.FOUND && (evt.matchesCount?.total ?? 1) > 0
+      if (found) {
+        report({ kind: 'matched', exact: ladderIdx === 0 })
+        return
+      }
+      const notFound = evt.state === FindState.NOT_FOUND || evt.matchesCount?.total === 0
       if (!notFound) return
       ladderIdx += 1
       if (ladderIdx < ladder.length) {
         dispatchFind(ladder[ladderIdx])
       } else {
-        jumpToPage() // give up on highlight, at least land on the right page
+        jumpToPage() // no match anywhere — hold the cited page, be honest about it
+        report({ kind: 'not-found' })
       }
     }
     eventBus.on('updatefindcontrolstate', onFindState)
@@ -158,9 +180,10 @@ export default function PdfViewer({ url, page, search }: PdfViewerProps) {
       viewerRef.current = null
       eventBusRef.current = null
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [url])
 
-  // React to page / search changes without reloading the document.
+  // React to page / search changes without reloading the document (same find logic).
   useEffect(() => {
     const pdfViewer = viewerRef.current
     const eventBus = eventBusRef.current
@@ -170,7 +193,10 @@ export default function PdfViewer({ url, page, search }: PdfViewerProps) {
     }
     const ladder = search ? phraseLadder(search) : []
     if (ladder.length) {
+      statusCbRef.current?.({ kind: 'searching' })
       window.setTimeout(() => eventBus.dispatch('find', { ...FIND_BASE, query: ladder[0] }), 250)
+    } else {
+      statusCbRef.current?.({ kind: 'no-phrase' })
     }
   }, [page, search])
 
