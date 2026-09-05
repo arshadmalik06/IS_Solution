@@ -9,7 +9,8 @@ import SplitScreen from '../components/chat/SplitScreen'
 import ChatBackground from '../components/chat/ChatBackground'
 
 export default function AssistantPage() {
-  const { messages, isLoading, sessions, sendMessage, clearChat } = useChat()
+  // 1. EXTRACT loadSession HERE
+  const { messages, isLoading, sessions, sendMessage, clearChat, loadSession } = useChat()
   const scrollRef = useRef<HTMLDivElement>(null)
   
   // This state tracks which PDF is currently open
@@ -24,7 +25,14 @@ export default function AssistantPage() {
     : undefined
 
   return (
-    <Layout sessions={sessions} onNewChat={clearChat} currentPage="assistant" chatTitle={chatTitle || 'QuBIS Assistant'}>
+    // 2. PASS onSelectSession={loadSession} TO THE LAYOUT HERE
+    <Layout 
+      sessions={sessions} 
+      onNewChat={clearChat} 
+      onSelectSession={loadSession} 
+      currentPage="assistant" 
+      chatTitle={chatTitle || 'QuBIS Assistant'}
+    >
       <div className="flex h-full relative w-full overflow-hidden">
         
         {/* Left Side: Chat Interface */}

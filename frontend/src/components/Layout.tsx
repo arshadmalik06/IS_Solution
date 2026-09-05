@@ -7,11 +7,12 @@ type LayoutProps = {
   children: React.ReactNode
   sessions: ChatSession[]
   onNewChat: () => void
+  onSelectSession?: (sessionId: string) => void
   currentPage: string
   chatTitle?: string
 }
 
-export default function Layout({ children, sessions, onNewChat, currentPage, chatTitle }: LayoutProps) {
+export default function Layout({ children, sessions, onNewChat, onSelectSession, currentPage, chatTitle }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const savedWidth = Number(localStorage.getItem('qubis_sidebar_width'))
@@ -73,6 +74,7 @@ export default function Layout({ children, sessions, onNewChat, currentPage, cha
         <Sidebar
           sessions={sessions}
           onNewChat={onNewChat}
+          onSelectSession={onSelectSession}
           currentPage={currentPage}
           onCloseMobile={() => setSidebarOpen(false)}
         />

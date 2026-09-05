@@ -5,6 +5,7 @@ import type { ChatSession } from '../types'
 type SidebarProps = {
   sessions: ChatSession[]
   onNewChat: () => void
+  onSelectSession?: (sessionId: string) => void
   currentPage: string
   onCloseMobile: () => void
 }
@@ -13,7 +14,7 @@ const NAV_ITEMS = [
   { path: '/', icon: 'smart_toy', label: 'QuBIS Assistant', key: 'assistant' },
 ]
 
-export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage, onCloseMobile }: SidebarProps) {
+export default function Sidebar({ sessions, onNewChat, onSelectSession, currentPage: _currentPage, onCloseMobile }: SidebarProps) {
   const navigate = useNavigate()
   const location = useLocation()
   const [searchQuery, setSearchQuery] = useState('')
@@ -22,9 +23,12 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
     s.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+  // FIX 1: Only close the sidebar automatically on mobile screens!
   const handleNav = (path: string) => {
     navigate(path)
-    onCloseMobile()
+    if (window.innerWidth < 768) {
+      onCloseMobile()
+    }
   }
 
   const isActive = (path: string) => location.pathname === path
@@ -49,7 +53,7 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
       {/* New Chat Button */}
       <div className="px-4 pt-4 pb-2">
         <button
-          onClick={() => { onNewChat(); handleNav('/') }}
+          onClick={() => { onNewChat(); handleNav('/'); }}
           className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-[#E9441F] text-white hover:bg-[#CC3A1A] transition-all shadow-sm group"
         >
           <div className="flex items-center gap-2">
@@ -109,7 +113,19 @@ export default function Sidebar({ sessions, onNewChat, currentPage: _currentPage
             {filteredSessions.slice(0, 6).map((session, i) => (
               <button
                 key={session.id}
-                onClick={() => handleNav('/')}
+                onClick={() => {
+                  if (onSelectSession) onSelectSession(session.id);
+                  
+                  // FIX 2: Do not force a router navigation if we are already on the chat page
+                  if (location.pathname !== '/') {
+                    navigate('/');
+                  }
+                  
+                  // FIX 3: Stop collapsing the sidebar on desktop clicks!
+                  if (window.innerWidth < 768) {
+                    onCloseMobile();
+                  }
+                }}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors text-left ${
                   i === 0
                     ? 'bg-sidebar-surface text-sidebar-text-active font-medium'

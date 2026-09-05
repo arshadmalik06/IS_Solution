@@ -36,7 +36,7 @@ def _delete_file(path: str) -> None:
 # ---------------------------------------------------------------------------
 
 @router.post("/stt")
-async def speech_to_text(audio: UploadFile = File(...)):
+def speech_to_text(audio: UploadFile = File(...)):
     """
     Receive a browser audio recording (webm/wav/ogg) and return the
     transcribed text along with the detected language.
