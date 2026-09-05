@@ -10,9 +10,11 @@ type LayoutProps = {
   onSelectSession?: (sessionId: string) => void
   currentPage: string
   chatTitle?: string
+  onExport?: () => void
+  exportLabel?: string
 }
 
-export default function Layout({ children, sessions, onNewChat, onSelectSession, currentPage, chatTitle }: LayoutProps) {
+export default function Layout({ children, sessions, onNewChat, onSelectSession, currentPage, chatTitle, onExport, exportLabel }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const savedWidth = Number(localStorage.getItem('qubis_sidebar_width'))
@@ -102,6 +104,8 @@ export default function Layout({ children, sessions, onNewChat, onSelectSession,
           chatTitle={chatTitle}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
           sidebarOpen={sidebarOpen}
+          onExport={onExport}
+          exportLabel={exportLabel}
         />
         <main className="flex-1 overflow-hidden pt-14">
           {children}

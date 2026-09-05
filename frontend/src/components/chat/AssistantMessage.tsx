@@ -13,7 +13,6 @@ type AssistantMessageProps = {
 
 export default function AssistantMessage({ message, onOpenPdf }: AssistantMessageProps) {
   const [copied, setCopied] = useState(false)
-  const [isHelpful, setIsHelpful] = useState(false)
   const time = message.timestamp.toLocaleTimeString('en-IN', {
     hour: 'numeric',
     minute: '2-digit',
@@ -25,18 +24,6 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
       await navigator.clipboard.writeText(message.content)
       setCopied(true)
       window.setTimeout(() => setCopied(false), 1800)
-    } catch {}
-  }
-
-  const handleForward = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'QuBIS response', text: message.content })
-      } else {
-        await navigator.clipboard.writeText(message.content)
-        setCopied(true)
-        window.setTimeout(() => setCopied(false), 1800)
-      }
     } catch {}
   }
 
@@ -108,7 +95,7 @@ export default function AssistantMessage({ message, onOpenPdf }: AssistantMessag
               <div className="flex items-center gap-1 flex-shrink-0 text-text-muted transition-colors">
                 <SpeakerButton text={message.content} />
                 <button type="button" onClick={handleCopy} className="rounded-lg border border-transparent p-1.5 hover:border-border hover:bg-surface-elevated">
-                  <span className="material-symbols-outlined text-[17px]">content_copy</span>
+                  <span className="material-symbols-outlined text-[17px]">{copied ? 'check' : 'content_copy'}</span>
                 </button>
               </div>
             </div>

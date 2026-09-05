@@ -12,6 +12,7 @@ type SidebarProps = {
 
 const NAV_ITEMS = [
   { path: '/', icon: 'smart_toy', label: 'QuBIS Assistant', key: 'assistant' },
+  { path: '/checklist', icon: 'fact_check', label: 'Compliance Checklist', key: 'checklist' },
 ]
 
 export default function Sidebar({ sessions, onNewChat, onSelectSession, currentPage: _currentPage, onCloseMobile }: SidebarProps) {

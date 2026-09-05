@@ -5,9 +5,11 @@ type HeaderProps = {
   chatTitle?: string
   onToggleSidebar?: () => void
   sidebarOpen?: boolean
+  onExport?: () => void
+  exportLabel?: string
 }
 
-export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: HeaderProps) {
+export default function Header({ chatTitle, onToggleSidebar, sidebarOpen, onExport, exportLabel }: HeaderProps) {
   const { theme } = useTheme()
   const { updateSettings } = useSettings()
 
@@ -18,7 +20,7 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
     updateSettings({ theme: isDark ? 'light' : 'dark' })
   }
 
-  const handleExport = () => {
+  const handleDefaultExport = () => {
     // Export current chat as text file
     const content = document.querySelector('[data-chat-content]')?.textContent || 'No chat content to export.'
     const blob = new Blob([content], { type: 'text/plain' })
@@ -62,12 +64,12 @@ export default function Header({ chatTitle, onToggleSidebar, sidebarOpen }: Head
       <div className="flex flex-shrink-0 items-center gap-1 sm:gap-2">
 
         <button
-          onClick={handleExport}
+          onClick={onExport || handleDefaultExport}
           className="flex items-center gap-1.5 rounded-lg border border-border bg-surface-card p-2 text-[14px] font-semibold text-text-secondary shadow-sm transition-colors hover:bg-surface-elevated hover:text-text-primary sm:px-3 sm:py-1.5"
-          aria-label="Export chat report"
+          aria-label={exportLabel || "Export chat report"}
         >
           <span className="material-symbols-outlined text-[16px] text-text-muted">download</span>
-          <span className="hidden sm:inline">Export BIS Report</span>
+          <span className="hidden sm:inline">{exportLabel || 'Export BIS Report'}</span>
         </button>
 
         <a
